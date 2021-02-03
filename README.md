@@ -1,28 +1,13 @@
-<p align="center">
-  <a href="https://revealjs.com">
-  <img src="https://hakim-static.s3.amazonaws.com/reveal-js/logo/v1/reveal-black-text.svg" alt="reveal.js" width="450">
-  </a>
-  <br><br>
-  <a href="https://github.com/hakimel/reveal.js/actions"><img src="https://github.com/hakimel/reveal.js/workflows/tests/badge.svg"></a>
-  <a href="https://slides.com/"><img src="https://s3.amazonaws.com/static.slid.es/images/slides-github-banner-320x40.png?1" alt="Slides" width="160" height="20"></a>
-</p>
+# C++20 + Lua = Flexibility
 
-reveal.js is an open source HTML presentation framework. It enables anyone with a web browser to create fully featured and beautiful presentations for free. [Check out the live demo](https://revealjs.com/).
+The image links below refer to [my](http://www.james-pascoe.com) upcoming presentation at
+[ACCU 2021](https://flame.firebird.systems/archer-yates/ACCU2021/MyProgrammes#Entry.ItemPage.12122.0.EntryDefinition.b8efce33-2c84-4290-ba65-991a03ef305d)
+and consists of a link to the online [presentation](http://jamespascoe.github.io/accu2021), a link
+to the [LuaChat](http://github.com/jamespascoe/LuaChat.git) sample code and a link to the GitHub gist for
+the SWIG [callback example](https://gist.github.com/jamespascoe/523a5cf4114a1230b4d8a386bb8cd8ba). Note
+that the presentation is written using the excellent [Reveal.js](https://github.com/hakimel/reveal.js/)
+framework.
 
-The framework comes with a broad range of features including [nested slides](https://revealjs.com/vertical-slides/), [Markdown support](https://revealjs.com/markdown/), [Auto-Animate](https://revealjs.com/auto-animate/), [PDF export](https://revealjs.com/pdf-export/), [speaker notes](https://revealjs.com/speaker-view/), [LaTeX support](https://revealjs.com/math/), [syntax highlighted code](https://revealjs.com/code/) and much more.
-
-<h1>
-  <a href="https://revealjs.com/installation" style="font-size: 3em;">Get Started</a>
-</h1>
-
-## Documentation
-The full reveal.js documentation is available at [revealjs.com](https://revealjs.com).
-
-## Online Editor
-Want to create your presentation using a visual editor? Try the official reveal.js presentation platform for free at [Slides.com](https://slides.com). It's made by the same people behind reveal.js.
-
-## License
-
-MIT licensed
-
-Copyright (C) 2011-2020 Hakim El Hattab, https://hakim.se
+[![C++20 + Lua = Flexibility](media/C++20_plus_Lua_equals_Flexibility.png)](http://jamespascoe.github.io/accu2021)
+[![LuaChat Example Code](media/Lua_Chat_Logo.png)](http://github.com/jamespascoe/LuaChat.git)
+[![GitHub Gist for SWIG Callback Example](media/Octocat.png)](https://gist.github.com/jamespascoe/523a5cf4114a1230b4d8a386bb8cd8ba)
