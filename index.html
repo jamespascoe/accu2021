@@ -1,0 +1,764 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>C++20 + Lua = Flexibility</title>
+
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <!-- <link rel="stylesheet" href="dist/theme/black.css" id="theme"> -->
+    <link rel="stylesheet" href="dist/theme/league.css" id="theme">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+    <!-- <link rel="stylesheet" href="plugin/highlight/github.css" id="highlight-theme"> -->
+
+    <!-- Printing and PDF exports
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    -->
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h1>C++20 + Lua = Flexibility</h1>
+          <p>
+            <small>
+              James (Jim) Pascoe<br>
+              <a href="http://www.james-pascoe.com">http://www.james-pascoe.com</a><br>
+              <a href="mailto:james@james-pascoe.com">james@james-pascoe.com</a><p>
+
+              <a href="http://jamespascoe.github.io/cpponsea2020">http://jamespascoe.github.io/accu2021</a><br>
+              <a href="https://github.com/bluwireless/LuaChat.git">https://github.com/jamespascoe/LuaChat.git</a>
+            </small>
+        </section>
+        <section>
+          <h2>Overview</h2>
+          <ul>
+            <span class="fragment"><li>Software Flexibility and Motivation</li></span>
+            <span class="fragment"><li>High Speed Rail Example</li></span>
+            <span class="fragment"><li>How to Combine C++17 and Lua</li></span>
+            <span class="fragment"><li>Concurrency and Asynchrony</li></span>
+            <span class="fragment"><li>Performance and Conclusion</li></span>
+          </ul>
+        </section>
+        <section>
+          <h2>Flexibility</h2>
+          <span class="fragment" style="color:yellow">What Does it Mean for Software to be Flexible?</span>
+          <p>
+          <ul>
+            <span class="fragment"><li>Portability</li></span>
+            <span class="fragment"><li>Evolves well over time</li></span>
+            <span class="fragment"><ul><li>programming vs. software engineering</li></ul></span>
+            <span class="fragment"><li>Easy to change</li></span>
+            <span class="fragment"><li>Behaviour is adaptable</li></span>
+            <span class="fragment fade-in">
+              <span class="fragment highlight-yellow"><li>Copes with future unknowns</li></span>
+            </span>
+          </ul>
+        </section>
+
+      <section>
+          <section data-background-video="media/BluWireless_Rail_Background.mp4" data-background-video-loop=true>
+            <h1>High Speed Rail</h1>
+          </section>
+
+          <section>
+            <h2><a href="http://bluwireless.com/transport/rail">Blu Wireless</a></h2>
+            <ul>
+              <span class="fragment"><li>IP networking over 5G mmWave (60 GHz) modems</li></span>
+              <span class="fragment"><ul><li>802.11ad MAC + PHY (Hydra) + software</li></ul></span>
+              <span class="fragment"><li>High-bandwidth, low latency mobile Internet</li></span>
+              <span class="fragment"><ul><li>Up to 3.5Gbps wireless links (up to 1km)</ul></span>
+              <span class="fragment"><li>Embedded quad-core ARMv8 NPUs</li></span>
+              <span class="fragment"><ul><li>Track-side / train-top mmWave radios</li></ul</span>
+            </ul>
+          </section>
+
+          <section data-menu-title="Blu Wireless Devices">
+          <img class="stretch" data-src="media/devices.png" style="background:none; border:none; box-shadow:none;">
+          </section>
+
+          <section section data-menu-title="Rail Environment Video" data-background-video="media/BluWireless_Rail_Connectivity.mp4"></section>
+
+          <section>
+            <h2>Connection Management</h2>
+            <ul>
+              <span class="fragment fade-in">
+                <span class="fragment highlight-yellow"><li>Mission critical software component</li></span>
+              </span>
+              <span class="fragment fade-in">
+                <span class="fragment highlight-yellow"><li>Decides which radio to connect to and when</li></span>
+              </span>
+              <span class="fragment"><li>v1.0 fixed behaviour: connect to strongest signal</li></span>
+              <span class="fragment"><li>Anomalies led to poor performance</li></span>
+              <span class="fragment"><li>Software updates were costly</li></span>
+              <span class="fragment fade-in">
+                <span class="fragment highlight-yellow"><li>Improvements could not be made fast enough</li></span>
+              </span>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Mobile Connection Manager</h2>
+            <ul>
+              <span class="fragment"><li>Complete redesign</li></span>
+              <span class="fragment"><li>Decoupled architecture (C++17 & Lua 5.3.5)</li></span>
+              <span class="fragment fade-in" style="color:yellow"><li>Actions (C++): 'Scan', 'Connect', 'Probe' etc.</li></span>
+              <span class="fragment fade-in" style="color:yellow"><li>Behaviours (Lua): implement 'beam choreography'</li></span>
+              <span class="fragment fade-in" style="color:yellow"><li>Changes can be made in the field by FAEs</li></span>
+              <span class="fragment"><li>Consolidated into supported releases</li></span>
+            </ul>
+          </section>
+
+          <section data-menu-title="MCM Architecture">
+            <img class="stretch" data-src="media/Mobile_Connection_Manager.png" style="background:none; border:none; box-shadow:none;">
+          </section>
+
+        </section>
+
+        <section>
+
+          <section data-background-video="media/BluWireless_Rail_Background.mp4" data-background-video-loop=true>
+            <h1>Combining Modern C++ and Lua</h1>
+          </section>
+
+          <section>
+            <h2><a href="http://lua.org">Lua</a></h2>
+            <ul>
+              <span class="fragment"><li>Lightweight embeddable scripting language</li></span>
+              <span class="fragment"><li>Dynamically typed, runs by interpreting bytecode</li></span>
+              <span class="fragment"><li>Simple procedural syntax</li></span>
+              <span class="fragment"><li>Emphasis on meta-mechanisms</li></span>
+              <span class="fragment fade-in">
+                <span class="fragment highlight-yellow"><li>Instant appeal for Architects, FAEs etc.</li></span>
+              </span>
+            </ul>
+          </section>
+
+          <section>
+            <h2><a href="https://www.lua.org/manual/5.3/manual.html#4">The Lua Stack</a></h2>
+            <ul>
+              <span class="fragment"><li>Lua communicates with C++ through a virtual stack</li></span>
+              <span class="fragment"><li>Strict stack discipline is not enforced</li></span>
+              <span class="fragment"><ul><li>indices &#8805 1 are positions from the bottom</li></ul></span>
+              <span class="fragment"><ul><li>negative indices are relative to the top</li></ul></span>
+              <span class="fragment"><li>Pseudo indices for the Lua Registry and Upvalues</li></span>
+              <span class="fragment"><li>Compile with LUA_USE_APICHECK to enable checks</li></span>
+            </ul>
+          </section>
+
+          <section>
+            <h2>First Example: Lua</h2>
+            <pre><code class="stretch lua" data-trim data-line-numbers="|1-2|4-15|11-12|">
+-- Create a global table 't'
+t = { x=1, y=2 }
+
+function f (str, val, int)
+  print(
+    string.format(
+      "Lua: f called with args: %s %d %d", str, val, int
+    )
+  )
+
+  -- Call a C++ function
+  local rc = cppFunc(str, t.y, int)
+
+  return rc
+end
+            </code></pre>
+          </section>
+
+          <section>
+            <h2><a href="http://www.lua.org/manual/5.3/manual.html#4.8">First Example: C++</a></h2>
+            <pre class="stretch"><code class="c++" style="width:103%" data-trim data-line-numbers="|4-11|15-26|28-35|">
+#include &ltiostream&gt
+#include "lua5.3/lua.hpp"
+
+int cppFunc(lua_State *L) {
+  std::cout << "cppFunc called with args:" << std::endl;
+
+  for (int n=1; n <= lua_gettop(L); ++n)
+    std::cout << lua_tostring(L, n) << std::endl;
+
+  return 0;
+}
+
+int main([[maybe_unused]] int argc, char ** argv)
+{
+  // Create a new lua state
+  lua_State *L = luaL_newstate();
+
+  // Open all libraries
+  luaL_openlibs(L);
+
+  // export a C++ function to Lua
+  lua_register(L, "cppFunc", cppFunc);
+
+  // Load and run the Lua file
+  luaL_loadfile(L, argv[1]);
+  lua_pcall(L, 0, 0, 0);
+
+  // Call 'f' with the arguments "how", t.x, 14
+  lua_getglobal(L, "f");     /* function to be called */
+  lua_pushliteral(L, "how"); /* 1st argument */
+  lua_getglobal(L, "t");     /* table to be indexed */
+  lua_getfield(L, -1, "x");  /* push t.x (2nd arg) */
+  lua_remove(L, -2);         /* remove 't' from the stack */
+  lua_pushinteger(L, 14);    /* 3rd argument */
+  lua_call(L, 3, 1);         /* call 'f' (3 args, 1 res) */
+
+  lua_close(L);
+}
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>First Example: Build & Run</h2>
+              <pre style="width:100%"><code class="plaintext" data-trim data-noescape data-line-numbers="|1-3|4-8|">
+> brew install lua # sudo apt-get -y install lua5.3
+> clang++ -std=c++17 -llua -o lua-cpp lua-cpp.cpp
+> ./lua-cpp lua-cpp.lua
+Lua: f called with args: how 1 14
+cppFunc called with args:
+how
+2
+14
+              </code></pre>
+          </section>
+
+          <section>
+            <h2><a href="http://www.github.com/jamespascoe/">LuaChat</a></h2>
+            <ul>
+              <span class="fragment"><li>Unix 'talk' program (written in C++17 & Lua 5.3.5)</li></span>
+              <span class="fragment"><li>Available on <a href="http://www.github.com/jamespascoe/">GitHub</a> (MIT license)</li></span>
+              <span class="fragment"><li><a href="http://think-async.com/Asio/asio-1.12.2/doc/">Asio</a> for asynchronous TCP and timers</li></span>
+              <span class="fragment"><li><a href="https://github.com/gabime/spdlog">spdlog</a> for logging,
+                        <a href="https://github.com/jarro2783/cxxopts">cxxopts</a> for command line processing and
+                        <a href="https://cmake.org/cmake/help/latest/">CMake</a> for build generation</li></span>
+            </ul>
+          </section>
+
+          <section data-menu-title="LuaChat Session">
+          <img width="70%" data-src="media/LuaChat-run-1.png" style="background:none; border:none; box-shadow:none;">
+          <img width="70%" data-src="media/LuaChat-run-2.png" style="background:none; border:none; box-shadow:none;">
+          </section>
+
+          <section data-menu-title="LuaChat Architecture">
+          <img class="stretch" data-src="media/LuaChat.png" style="background:none; border:none; box-shadow:none;">
+          </section>
+
+          <section>
+            <h2><a href="https://github.com/jamespascoe/LuaChat/">Build Instructions</a></h2>
+            <p>
+            Ubuntu 18.04 (Linux Mint 19):
+            <pre><code class="plaintext" data-trim data-noescape data-line-numbers="">
+git clone https://github.com/jamespascoe/LuaChat.git
+sudo apt-get -y install lua5.3 lua5.3-dev luarocks swig
+sudo luarocks install luaposix
+mkdir build; cd build; cmake ../LuaChat; make
+./src/lua_chat
+            </code></pre>
+            <p>
+            MacOS (Catalina):
+            <pre><code class="plaintext" data-trim data-noescape data-line-numbers="">
+git clone https://github.com/jamespascoe/LuaChat.git
+brew install lua luarocks swig
+luarocks install luaposix
+mkdir build; cd build; cmake ../LuaChat; make
+./src/lua_chat
+            </code></pre>
+          </section>
+
+          <section>
+            <h2><a href="http://swig.org">SWIG</a></h2>
+            <ul>
+              <span class="fragment"><li>Simplified Wrapper and Interface Generator</li></span>
+              <span class="fragment"><li>Produces C++ bindings for many target languages</li></span>
+              <span class="fragment"><li>Generates Lua stack calls for std C++ types</li></span>
+              <span class="fragment"><ul><li>std::string, std::vector, std::map etc.</li></ul></span>
+              <span class="fragment"><li>C++20 types can be supported with typemaps</li></span>
+              <span class="fragment"><li>Integrates well with CMake</li></span>
+            </ul>
+          </section>
+
+          <section>
+            <h2>LuaChat SWIG CMake</h2>
+            <pre class="stretch"><code class="CMake" data-trim data-line-numbers="|2|8|">
+set(LUA_CHAT_SWIG_SRCS
+    lua_chat_actions.i lua_chat_action_log.cpp)
+
+set_source_files_properties(${LUA_CHAT_SWIG_SRCS}
+                            PROPERTIES CPLUSPLUS ON)
+
+swig_add_library(actions TYPE USE_BUILD_SHARED_LIBS
+                 LANGUAGE lua
+                 SOURCES ${LUA_CHAT_SWIG_SRCS})
+
+target_include_directories(actions PRIVATE
+                           ${CMAKE_CURRENT_SOURCE_DIR}
+                           ${LUA_CHAT_SOURCE_DIR}/src
+                           ${LUA_CHAT_SOURCE_DIR}/third_party
+                           ${LUA_INCLUDE_DIR})
+
+target_compile_definitions(actions PRIVATE ASIO_STANDALONE)
+
+target_link_libraries(actions PRIVATE std::filesystem)
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>LuaChat SWIG Input</h2>
+            <pre class="stretch"><code class="" data-trim data-line-numbers="|1|3|5-11|13-14|16-25|27-32|">
+%module Actions
+
+%include &ltstd_string.i&gt
+
+// Definitions required by the SWIG wrapper to compile
+%{
+#include "lua_chat_log_manager.hpp"
+#include "lua_chat_action_log.hpp"
+#include "lua_chat_action_talk.hpp"
+#include "lua_chat_action_timer.hpp"
+%}
+
+// Files to be wrapped by SWIG
+%include "lua_chat_action_log.hpp"
+
+%define CTOR_ERROR
+{
+  try {
+    $function
+  }
+  catch (std::exception const& e) {
+    log_fatal(e.what());
+  }
+}
+%enddef
+
+// Include the actions and define exception handlers
+%exception Talk::Talk CTOR_ERROR;
+%include "lua_chat_action_talk.hpp"
+
+%exception Timer::Timer CTOR_ERROR;
+%include "lua_chat_action_timer.hpp"
+            </code></pre>
+          </section>
+
+          <section>
+            <h2><a href="http://www.swig.org/Doc4.0/SWIGDocumentation.html#Typemaps">Typemaps</a></h2>
+            <ul>
+              <span class="fragment"><li>Maps C++ types onto types in the target language</li></span>
+              <span class="fragment"><li>We can add support for Modern C++ abstractions</li></span>
+              <span class="fragment"><ul><li>E.g. callbacks: Lua functions &#8594 std::function</li></ul></span>
+              <span class="fragment" style="color:yellow"><li>Acknowledgement: thanks to Petar Terziev for the original version of the following example</li></span>
+            </ul>
+          </section>
+
+          <section>
+            <h2><a href="https://gist.github.com/jamespascoe/523a5cf4114a1230b4d8a386bb8cd8ba">Lua Callback: SWIG Typemap</a></h2>
+            <pre class="stretch"><code class="" data-trim data-line-numbers="|1-3|5-17|19|">
+%typemap(typecheck) Example::Callback & {
+  $1 = lua_isfunction(L, $input);
+}
+
+%typemap(in) Example::Callback & (Example::Callback temp) {
+  // Create a reference to the Lua callback
+  SWIGLUA_REF fn;
+  swiglua_ref_set(&fn, L, $input);
+
+  temp = [&fn]() {
+    swiglua_ref_get(&fn);
+
+    lua_pcall(fn.L, 0, 0, 0);
+  };
+
+  $1 = &temp;
+}
+
+// %include source files AFTER typemap declarations
+            </code></pre>
+          </section>
+
+        </section>
+        <section>
+
+          <section data-background-video="media/BluWireless_Rail_Background.mp4" data-background-video-loop=true>
+            <h1>Actions</h1>
+          </section>
+
+          <section>
+            <h2>LuaChat Actions</h2>
+              <ul>
+                <span class="fragment" style="color:yellow">
+                  <li>
+                    <a href=https://github.com/jamespascoe/LuaChat/blob/master/src/actions/lua_chat_action_talk.cpp>Talk</a>:
+                    sends messages to a remote LuaChat
+                  </li>
+                </span>
+                <span class="fragment"><ul><li>Based on Asio - must also act as a server</li></ul></span>
+                  <span class="fragment"><ul><li>Use TCP for fault-tolerant in-order delivery</li></ul></span>
+                  <span class="fragment"><ul><li>One asynchronous TCP connection per message</li></ul></span>
+                  <span class="fragment" style="color:yellow">
+                    <li>
+                      <a href=https://github.com/jamespascoe/LuaChat/blob/master/src/actions/lua_chat_action_timer.cpp>Timer</a>:
+                      implements blocking and non-blocking waits
+                    </li>
+                  </span>
+                  <span class="fragment"><ul><li>Use Asio - required for Lua coroutine dispatcher</li></ul></span>
+                <span class="fragment" style="color:yellow">
+                  <li>
+                    <a href=https://github.com/jamespascoe/LuaChat/blob/master/src/actions/lua_chat_action_log.cpp>Log</a>:
+                    wraps spdlog primitives
+                  </li>
+                </span>
+              </ul>
+          </section>
+
+          <section>
+            <h2><a href="http://think-async.com/Asio/asio-1.12.2/doc/asio/tutorial/tutdaytime3.html#asio.tutorial.tutdaytime3.the_tcp_connection_class">TCP Connections</a></h2>
+
+            </code></pre>
+            <pre class="stretch"><code class="c++" data-trim data-line-numbers="|4-8,15-16|10-12,18-19|">
+class tcp_connection
+{
+public:
+  using pointer = std::shared_ptr&lttcp_connection&gt;
+
+  static pointer create(asio::io_context& io_context) {
+    return pointer(new tcp_connection(io_context));
+  }
+
+  asio::ip::tcp::socket& socket() { return m_socket; }
+
+  std::string& data() { return m_data; }
+
+private:
+  tcp_connection(asio::io_context& io_context)
+    : m_socket(io_context) {}
+
+  asio::ip::tcp::socket m_socket;
+  std::string m_data;
+};
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Connection Handling</h2>
+            </code></pre>
+            <pre class="stretch"><code class="c++" data-trim data-line-numbers="|2-3|4,6|12-20|">
+Talk::Talk(unsigned short port)
+    : m_acceptor(m_io_context,
+                tcp::endpoint(tcp::v4(), port)) {
+  start_accept();
+
+  m_thread = std::thread([this](){ m_io_context.run(); });
+
+  log_trace("Talk action starting");
+}
+
+void Talk::start_accept() {
+  tcp_connection::pointer connection =
+      tcp_connection::create(
+        m_acceptor.get_executor().context()
+      );
+
+  m_acceptor.async_accept(connection-&gtsocket(),
+      [this, connection](const asio::error_code& error) {
+        handle_accept(connection, error);
+      }
+  );
+}
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Accepting Connections</h2>
+            </code></pre>
+            <pre class="stretch"><code class="c++" data-trim data-line-numbers="|6-15|19|">
+void Talk::handle_accept(tcp_connection::pointer connection,
+                         asio::error_code const& error) {
+  if (!error) {
+    log_debug("Accepted message connection");
+
+    asio::async_read(
+      connection-&gtsocket(),
+      asio::dynamic_buffer(connection-&gtdata()),
+      [this, connection](
+        const asio::error_code& error,
+        std::size_t bytes_transferred)
+        {
+          handle_read(error, bytes_transferred, connection);
+        }
+    );
+  } else
+    log_error("Talk accept failed: {}", error.message());
+
+  start_accept();
+}
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Storing Data</h2>
+            </code></pre>
+            <pre class="stretch"><code class="c++" data-trim data-line-numbers="|4-5|7-12|">
+void Talk::handle_read(asio::error_code const& error,
+                       std::size_t bytes_transferred,
+                       tcp_connection::pointer connection) {
+  // Check error - 'eof' means that the remote connection has closed
+  if (!error || error == asio::error::eof) {
+
+    // Limit the message array
+    if (m_messages.size() &gt max_messages)
+      m_messages.erase(m_messages.begin());
+
+    // Store the message for Lua retrieval
+    m_messages.emplace_back(connection-&gtdata());
+
+    log_info("Received message ({} bytes): {}",
+             bytes_transferred,
+             connection-&gtdata());
+  } else
+    log_error("Talk read failed: {}", error.message());
+}
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Lua Retrieval</h2>
+            </code></pre>
+            <pre><code class="c++" data-trim data-line-numbers="">
+std::string Talk::GetNextMessage(void) {
+  if (!IsMessageAvailable())
+    return "";
+
+  std::string ret = m_messages.front();
+
+  m_messages.erase(m_messages.begin());
+
+  return ret;
+}
+            </code></pre>
+          </section>
+
+        </section>
+        <section>
+
+        <section data-background-video="media/BluWireless_Rail_Background.mp4" data-background-video-loop=true>
+          <h1>Behaviour</h1>
+        </section>
+
+        <section>
+          <h2>Coroutines</h2>
+            <ul>
+              <span class="fragment"><li>Great for event-driven asynchronous systems</li></span>
+              <span class="fragment"><li><a href="https://www.lua.org/pil/9.1.html">Lua coroutines</a> are stackful</li></span>
+              <span class="fragment"><li><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/n4775.pdf">C++20 coroutines</a> are stackless</li></span>
+              <span class="fragment"><li>Single threaded so lock-free, no races etc.</li></span>
+              <span class="fragment"><li>Implement your own dispatcher in Lua</li></span>
+            </ul>
+        </section>
+
+        <section>
+          <h2><a href="https://github.com/bluwireless/LuaChat/blob/master/behaviours/lua_chat.lua">LuaChat Behaviour</a></h2>
+            <ul>
+              <span class="fragment"><li>Sender coroutine: sends user input to peer</li></span>
+              <span class="fragment"><li>Receiver coroutine: prints received messages</li></span>
+              <span class="fragment"><li>Dispatcher coroutine: schedules sender and receiver</li></span>
+              <span class="fragment"><li>main: processes arguments and creates coroutines</li></span>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Sender Coroutine</h2>
+            <pre class="stretch"><code class="lua" data-trim data-line-numbers="|5|5-12|14-20|24|">
+function sender (talk, host, port)
+
+  while true do
+
+    local ret = require 'posix'.rpoll(0, 1000)
+    if (ret == 1) then
+      local message = io.read()
+      if (message ~= "") then
+
+        local ret = talk:Send(
+          tostring(host), tostring(port), tostring(message)
+        )
+
+        if (ret == Actions.Talk.ErrorType_SUCCESS) then
+          Actions.Log.info(
+            string.format(
+              "Message sent to %s:%s %s", host, port, message
+            )
+          )
+        end
+      end
+    end
+
+    coroutine.yield()
+
+  end
+
+end
+            </code></pre>
+          </section>
+
+        <section>
+            <h2>Receiver Coroutine</h2>
+            <pre class="stretch"><code class="lua" data-trim data-line-numbers="|6-8|10|12-16|18|">
+function receiver (talk, host, port)
+
+  while true do
+
+    -- Yield until a message arrives, at which point, print it
+    repeat
+      coroutine.yield()
+    until talk:IsMessageAvailable()
+
+    local message = talk:GetNextMessage()
+
+    Actions.Log.info(
+      string.format(
+        "Received from %s:%s %s", host, port, message
+      )
+    )
+
+    print(host .. ":" .. tostring(port) .. "&gt " .. message)
+
+  end
+
+end
+            </code></pre>
+          </section>
+
+          <section>
+            <h2><a href="https://www.lua.org/pil/9.4.html">Dispatcher</a></h2>
+            <pre class="stretch"><code class="lua" data-trim data-line-numbers="|3|6|8-9|11-24|27|">
+function dispatcher (coroutines)
+
+  local timer = Actions.Timer()
+
+  while true do
+    if next(coroutines) == nil then break end -- no coroutines
+
+    for name, co in pairs(coroutines) do
+      local status, result = coroutine.resume(co)
+
+      if result then -- coroutine has exited
+
+        if type(result) == "string" then -- runtime error
+          Actions.Log.critical(
+            "Coroutine '" .. tostring(name) .. "' error " .. result
+          )
+        else
+          Actions.Log.warn(
+            "Coroutine '" .. tostring(name) .. "' exited"
+          )
+        end
+
+        coroutines[name] = nil
+      end
+    end
+
+    timer(Actions.Timer.WaitType_BLOCK, 1, "ms", 0xffffffff)
+
+  end
+end
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+
+        <section data-background-video="media/BluWireless_Rail_Background.mp4" data-background-video-loop=true>
+          <h1>Conclusion</h1>
+        </section>
+
+        <section>
+          <h2>Performance</h2>
+            <ul>
+              <span class="fragment" style="color:yellow"><li>MCM spends a lot of time in the SWIG wrapper</li></span>
+              <ul>
+                <span class="fragment"><li>prefer lightweight typemaps</li></span>
+              </ul>
+              <span class="fragment" style="color:yellow"><li>The partition between C++ and Lua is important</li></span>
+              <ul>
+                <span class="fragment"><li>as is the concurrency design</li></span>
+              </ul>
+              <span class="fragment" style="color:yellow"><li>How the code interacts with Lua is significant</li></span>
+              <ul>
+                <span class="fragment"><li>prefer pre-compiled long-lived behaviours</li></span>
+              </ul>
+            </ul>
+        </section>
+
+        <section>
+          <h2>Conclusion</h2>
+            <ul>
+              <span class="fragment" style="color:yellow"><li>The combination of C++ and Lua is powerful</li></span>
+              <ul>
+                <span class="fragment"><li>Actions (C++) and Behaviours (Lua)</li></span>
+              </ul>
+              <span class="fragment" style="color:yellow"><li>SWIG allows us to map C++20 types to/from Lua</li></span>
+              <ul>
+                <span class="fragment"><li>std::any, std::optional, std::variant</li></span>
+                <span class="fragment"><li>be mindful of performance</li></span>
+              </ul>
+              <span class="fragment" style="color:yellow"><li><a href="https://www.lua.org/versions.html#5.4">Lua 5.4.0</a> is now available</li></span>
+              <ul>
+                <span class="fragment"><li><a href="https://foicica.com/lua/">Lua Quick Reference</a> (updated for Lua 5.4.0)</li></span>
+              </ul>
+            </ul>
+        </section>
+
+        <section>
+          <h2>Questions?</h2>
+          <p><p>
+          <a href="http://www.james-pascoe.com">http://www.james-pascoe.com</a><br>
+          <a href="mailto:james@james-pascoe.com">james@james-pascoe.com</a><p>
+
+          <a href="http://jamespascoe.github.io/accu2021">http://jamespascoe.github.io/accu2021</a><br>
+          <a href="https://github.com/bluwireless/LuaChat.git">https://github.com/jamespascoe/LuaChat.git</a>
+        </section>
+
+        </section>
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/menu/menu.js"></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+        controls: true,
+        totalTime: 5400,
+        hideInactiveCursor: true,
+        hideCursorTime: 2000,
+        hideAddressBar: true,
+        preloadIframes: true,
+        progress: false,
+        touch: true,
+        menu: {
+          themes: true
+        },
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu ]
+      });
+    </script>
+  </body>
+</html>
