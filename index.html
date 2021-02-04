@@ -8,22 +8,12 @@
 
     <link rel="stylesheet" href="dist/reset.css">
     <link rel="stylesheet" href="dist/reveal.css">
-    <!-- <link rel="stylesheet" href="dist/theme/black.css" id="theme"> -->
     <link rel="stylesheet" href="dist/theme/league.css" id="theme">
 
     <!-- Theme used for syntax highlighted code -->
-    <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
-    <!-- <link rel="stylesheet" href="plugin/highlight/github.css" id="highlight-theme"> -->
+    <!-- <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme"> -->
+    <link rel="stylesheet" href="plugin/highlight/github.css" id="highlight-theme">
 
-    <!-- Printing and PDF exports
-    <script>
-      var link = document.createElement( 'link' );
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
-      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-      document.getElementsByTagName( 'head' )[0].appendChild( link );
-    </script>
-    -->
   </head>
   <body>
     <div class="reveal">
@@ -756,6 +746,7 @@ end
         menu: {
           themes: true
         },
+        pdfSeparateFragments: false,
         // Learn about plugins: https://revealjs.com/plugins/
         plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu ]
       });
