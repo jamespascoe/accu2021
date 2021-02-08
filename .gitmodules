@@ -1,0 +1,3 @@
+[submodule "code-examples/sol2"]
+	path = code-examples/sol2
+	url = https://github.com/ThePhD/sol2.git
