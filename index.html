@@ -116,7 +116,7 @@
           <img class="stretch" data-src="media/devices.png" style="background:none; border:none; box-shadow:none;">
           </section>
 
-          <section section data-menu-title="Rail Environment Video" data-background-video="media/BluWireless_Rail_Connectivity.mp4"></section>
+          <section section data-menu-title="Blu Wireless How It Works" data-background-video="media/BluWireless_How_It_Works.mp4" id="video"></section>
 
           <section>
             <h2>Connection Management</h2>
@@ -782,6 +782,29 @@ end
         preloadIframes: true,
         progress: false,
         touch: true,
+        keyboard: {
+          67: () => { /* Keycode for the letter 'c' i.e. 'controls' */
+            var currentSlide = Reveal.getCurrentSlide();
+            var currentVideo = currentSlide.slideBackgroundElement.getElementsByTagName('video')[0];
+            if (currentVideo) {
+              /* Toggle video controls on/off */
+              currentVideo.controls = !currentVideo.controls
+            }
+          },
+          32: () => { /* Keycode for spacebar */
+            var currentSlide = Reveal.getCurrentSlide();
+            var currentVideo = currentSlide.slideBackgroundElement.getElementsByTagName('video')[0];
+            if (currentVideo) {
+              /* Pause/resume video when the spacebar is pressed */
+              if (currentVideo.paused == true) currentVideo.play();
+              else currentVideo.pause();
+            }
+            else {
+              /* Advance to next slide if no video (default Reveal behaviour) */
+              Reveal.next();
+            }
+          }
+        },
         menu: {
           themes: true
         },
@@ -789,6 +812,6 @@ end
         // Learn about plugins: https://revealjs.com/plugins/
         plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu ]
       });
-    </script>
+   </script>
   </body>
 </html>
