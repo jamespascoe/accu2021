@@ -32,6 +32,74 @@
               <a href="https://github.com/bluwireless/LuaChat.git">https://github.com/jamespascoe/LuaChat.git</a>
             </small>
         </section>
+      <section>
+        <h3>Line chart from JSON string</h3>
+        <canvas class="stretch" data-chart="line">
+<!--
+{
+ "data": {
+  "labels": ["January"," February"," March"," April"," May"," June"," July"],
+  "datasets":[
+   {
+    "data":[65,59,80,81,56,55,40],
+    "label":"My first dataset","backgroundColor":"rgba(20,220,220,.8)"
+   },
+   {
+    "data":[28,48,40,19,86,27,90],
+    "label":"My second dataset","backgroundColor":"rgba(220,120,120,.8)"
+   }
+  ]
+ },
+ "options": { "responsive": "true" }
+}
+-->
+        </canvas>
+      </section>
+      <section>
+        <h3>Line chart with CSV data and JSON configuration</h3>
+        <canvas class="stretch" data-chart="line">
+My first dataset,  65, 59, 80, 81, 56, 55, 40
+<!-- This is a comment -->
+My second dataset, 28, 48, 40, 19, 86, 27, 90
+<!--
+{
+"data" : {
+  "labels" : ["Enero", "Febrero", "Marzo", "Avril", "Mayo", "Junio", "Julio"],
+  "datasets" : [{ "borderColor": "#0f0", "borderDash": ["5","10"] }, { "borderColor": "#0ff" } ]
+  }
+}
+-->
+        </canvas>
+      </section>
+      <section>
+        <h3>Bar chart with CSV data</h3>
+        <canvas class="stretch" data-chart="bar">
+,January, February, March, April, May, June, July
+My first dataset, 65, 59, 80, 81, 56, 55, 40
+My second dataset, 28, 48, 40, 19, 86, 27, 90
+        </canvas>
+      </section>
+      <section>
+        <h3>Stacked bar chart from CSV file with JSON configuration</h3>
+        <canvas class="stretch" data-chart="bar" data-chart-src="benchmark-results/test-data.csv">
+<!--
+{
+"data" : {
+"datasets" : [{ "backgroundColor": "#0f0" }, { "backgroundColor": "#0ff" } ]
+},
+"options": { "responsive": true, "scales": { "xAxes": [{ "stacked": true }], "yAxes": [{ "stacked": true }] } }
+}
+-->
+        </canvas>
+      </section>
+      <section>
+        <h3>Pie chart</h3>
+        <canvas class="stretch" data-chart="pie">
+,Black, Red, Green, Yellow
+My first dataset, 40, 40, 20, 6
+My second dataset, 45, 40, 25, 4
+        </canvas>
+      </section>
         <section>
           <h2>Overview</h2>
           <span class="fragment" style="color:yellow">A Tutorial on Combining C++20 and Lua 5.4.2</span><br>
@@ -96,8 +164,8 @@
         </section>
 
       <section>
-          <section data-background-video="media/BluWireless_Rail_Background.mp4" data-background-video-loop=true>
-            <h1>High Speed Rail</h1>
+          <section data-background-video="media/BluWireless_HST_Background.mp4" data-background-video-loop=true>
+            <h1>High Speed Transport</h1>
           </section>
 
           <section>
@@ -156,7 +224,7 @@
 
         <section>
 
-          <section data-background-video="media/BluWireless_Rail_Background.mp4" data-background-video-loop=true>
+          <section data-background-video="media/BluWireless_HST_Background.mp4" data-background-video-loop=true>
             <h1>Combining Modern C++ and Lua</h1>
           </section>
 
@@ -420,7 +488,7 @@ target_link_libraries(actions PRIVATE std::filesystem)
         </section>
         <section>
 
-          <section data-background-video="media/BluWireless_Rail_Background.mp4" data-background-video-loop=true>
+          <section data-background-video="media/BluWireless_HST_Background.mp4" data-background-video-loop=true>
             <h1>Actions</h1>
           </section>
 
@@ -582,7 +650,7 @@ std::string Talk::GetNextMessage(void) {
         </section>
         <section>
 
-        <section data-background-video="media/BluWireless_Rail_Background.mp4" data-background-video-loop=true>
+        <section data-background-video="media/BluWireless_HST_Background.mp4" data-background-video-loop=true>
           <h1>Behaviour</h1>
         </section>
 
@@ -708,7 +776,7 @@ end
 
         <section>
 
-        <section data-background-video="media/BluWireless_Rail_Background.mp4" data-background-video-loop=true>
+        <section data-background-video="media/BluWireless_HST_Background.mp4" data-background-video-loop=true>
           <h1>Conclusion</h1>
         </section>
 
@@ -768,6 +836,8 @@ end
     <script src="plugin/markdown/markdown.js"></script>
     <script src="plugin/highlight/highlight.js"></script>
     <script src="plugin/menu/menu.js"></script>
+    <script src="plugin/chart/Chart.min.js"></script>
+    <script src="plugin/chart/plugin.js"></script>
     <script>
       // More info about initialization & config:
       // - https://revealjs.com/initialization/
@@ -805,12 +875,35 @@ end
             }
           }
         },
+        chart: {
+          defaults: {
+            global: {
+              title: { fontColor: "#FFF" },
+              legend: {
+                position: "bottom",
+                labels: { fontColor: "#FFF" },
+              },
+              tooltips: {
+                labels: { fontColor: "#FFF" },
+              },
+            },
+            scale: {
+              scaleLabel: { fontColor: "#FFF" },
+              gridLines: { color: "#FFF", zeroLineColor: "#FFF" },
+              ticks: { fontColor: "#FFF" },
+            }
+          },
+          line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
+          bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+          pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
+          radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+        },
         menu: {
           themes: true
         },
         pdfSeparateFragments: false,
         // Learn about plugins: https://revealjs.com/plugins/
-        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu ]
+        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu, RevealChart ]
       });
    </script>
   </body>
