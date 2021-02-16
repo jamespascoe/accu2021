@@ -32,74 +32,6 @@
               <a href="https://github.com/bluwireless/LuaChat.git">https://github.com/jamespascoe/LuaChat.git</a>
             </small>
         </section>
-      <section>
-        <h3>Line chart from JSON string</h3>
-        <canvas class="stretch" data-chart="line">
-<!--
-{
- "data": {
-  "labels": ["January"," February"," March"," April"," May"," June"," July"],
-  "datasets":[
-   {
-    "data":[65,59,80,81,56,55,40],
-    "label":"My first dataset","backgroundColor":"rgba(20,220,220,.8)"
-   },
-   {
-    "data":[28,48,40,19,86,27,90],
-    "label":"My second dataset","backgroundColor":"rgba(220,120,120,.8)"
-   }
-  ]
- },
- "options": { "responsive": "true" }
-}
--->
-        </canvas>
-      </section>
-      <section>
-        <h3>Line chart with CSV data and JSON configuration</h3>
-        <canvas class="stretch" data-chart="line">
-My first dataset,  65, 59, 80, 81, 56, 55, 40
-<!-- This is a comment -->
-My second dataset, 28, 48, 40, 19, 86, 27, 90
-<!--
-{
-"data" : {
-  "labels" : ["Enero", "Febrero", "Marzo", "Avril", "Mayo", "Junio", "Julio"],
-  "datasets" : [{ "borderColor": "#0f0", "borderDash": ["5","10"] }, { "borderColor": "#0ff" } ]
-  }
-}
--->
-        </canvas>
-      </section>
-      <section>
-        <h3>Bar chart with CSV data</h3>
-        <canvas class="stretch" data-chart="bar">
-,January, February, March, April, May, June, July
-My first dataset, 65, 59, 80, 81, 56, 55, 40
-My second dataset, 28, 48, 40, 19, 86, 27, 90
-        </canvas>
-      </section>
-      <section>
-        <h3>Stacked bar chart from CSV file with JSON configuration</h3>
-        <canvas class="stretch" data-chart="bar" data-chart-src="benchmark-results/test-data.csv">
-<!--
-{
-"data" : {
-"datasets" : [{ "backgroundColor": "#0f0" }, { "backgroundColor": "#0ff" } ]
-},
-"options": { "responsive": true, "scales": { "xAxes": [{ "stacked": true }], "yAxes": [{ "stacked": true }] } }
-}
--->
-        </canvas>
-      </section>
-      <section>
-        <h3>Pie chart</h3>
-        <canvas class="stretch" data-chart="pie">
-,Black, Red, Green, Yellow
-My first dataset, 40, 40, 20, 6
-My second dataset, 45, 40, 25, 4
-        </canvas>
-      </section>
         <section>
           <h2>Overview</h2>
           <span class="fragment" style="color:yellow">A Tutorial on Combining C++20 and Lua 5.4.2</span><br>
@@ -774,6 +706,214 @@ end
           </section>
         </section>
 
+
+        <section>
+
+        <section data-background-video="media/BluWireless_HST_Background.mp4" data-background-video-loop=true>
+          <h1>Performance</h1>
+        </section>
+
+          <section data-menu-title="Lua Bindings: x86_64">
+            <h3>Select Lua Bindings: x86 64-bit</h3>
+            <canvas data-chart="bar">
+            <!--
+            {
+              "data" : {
+                "labels" : ["C", "Sol2", "Sol3", "SWIG"],
+                "datasets" : [
+                {
+                  "label": "C Function Call",
+                  "data": [2482, 2690, 2819, 3002]
+                }, {
+                  "label": "Member Function Call",
+                  "data": [6397, 6322, 6421, 22294]
+                }, {
+                  "label": "Userdata Variable Access",
+                  "data": [6879, 10666, 10217, 17571]
+                }, {
+                  "label": "Multi Return from Lua",
+                  "data": [3438, 3289, 3920, 3899]
+                }, {
+                  "label": "Return Userdata",
+                  "data": [9321, 9663, 12176, 16864]
+                }, {
+                  "label": "Implicit Inheritance",
+                  "data": [4694, 26914, 15866, 9412]
+                }]
+              },
+              "options" : {
+                "legend":
+                {
+                  "labels": {"boxWidth":10}
+                },
+                "scales":
+                {
+                  "yAxes": [
+                  {
+                    "ticks": {"beginAtZero":true},
+                    "scaleLabel": {"display": true, "labelString": "Time (nanoseconds)"}
+                  }]
+                }
+              }
+            }
+            -->
+            </canvas>
+          </section>
+          <section data-menu-title="Lua Bindings: ARMv8">
+            <h3>Select Lua Bindings: Embedded ARMv8</h3>
+            <canvas data-chart="bar">
+            <!--
+            {
+              "data" : {
+                "labels" : ["C", "Sol2", "Sol3", "SWIG"],
+                "datasets" : [
+                {
+                  "label": "C Function Call",
+                  "data": [12598, 13729, 14651, 14619]
+                }, {
+                  "label": "Member Function Call",
+                  "data": [31004, 31775, 33898, 101029]
+                }, {
+                  "label": "Userdata Variable Access",
+                  "data": [35885, 49216, 48301, 79762]
+                }, {
+                  "label": "Multi Return from Lua",
+                  "data": [16797, 17249, 18798, 19161]
+                }, {
+                  "label": "Return Userdata",
+                  "data": [51986, 44861, 50627, 75634]
+                }, {
+                  "label": "Implicit Inheritance",
+                  "data": [23510, 127906, 72555, 47444]
+                }]
+              },
+              "options" : {
+                "legend":
+                {
+                  "labels": {"boxWidth":10}
+                },
+                "scales":
+                {
+                  "yAxes": [
+                  {
+                    "ticks": {"beginAtZero":true},
+                    "scaleLabel": {"display": true, "labelString": "Time (nanoseconds)"}
+                  }]
+                }
+              }
+            }
+            -->
+            </canvas>
+          </section>
+          <section data-menu-title="Benchmarks by Architecture">
+            <h3>Aggregated Benchmarks By Architecture</h3>
+
+            <style>
+            .container{
+                display: flex;
+                margin: 0 -2vw;
+            }
+            .col{
+                flex: 1;
+                margin: 0 2vw;
+            }
+            </style>
+
+            <div class="container">
+              <div class="col" style="height: 40vh">
+                <canvas data-chart="bar">
+                <!--
+                {
+                  "data" : {
+                    "labels" : ["C", "Sol2", "Sol3", "SWIG"],
+                    "datasets" : [{
+                      "label": "Embedded ARMv8",
+                      "data": [171780, 284736, 238830, 290205]
+                     }]
+                  },
+                  "options" : {
+                    "maintainAspectRatio": false,
+                    "legend":
+                    {
+                      "labels": {"boxWidth":10}
+                    },
+                    "scales":
+                    {
+                      "yAxes": [
+                      {
+                        "ticks": {"beginAtZero":true},
+                        "scaleLabel": {"display": true, "labelString": "Time (nanoseconds)"}
+                      }]
+                    }
+                  }
+                }
+                -->
+                </canvas>
+              </div>
+
+              <div class="col" style="height: 40vh">
+                <canvas data-chart="bar">
+                <!--
+                {
+                  "data" : {
+                    "labels" : ["C", "Sol2", "Sol3", "SWIG"],
+                    "datasets" : [{
+                      "label": "x86_64 i5-6200u",
+                      "backgroundColor": [ "rgba(220,120,120,.8)", "rgba(220,120,120,.8)",
+                                           "rgba(220,120,120,.8)", "rgba(220,120,120,.8)" ],
+                      "data": [33211, 59544, 51419, 73042]
+                     }]
+                  },
+                  "options" : {
+                    "maintainAspectRatio": false,
+                    "legend":
+                    {
+                      "labels": {"boxWidth":10}
+                    },
+                    "scales":
+                    {
+                      "yAxes": [
+                      {
+                        "ticks": {"beginAtZero": true},
+                        "scaleLabel": {"display": true, "labelString": "Time (nanoseconds)"}
+                      }]
+                    }
+                  }
+                }
+                -->
+                </canvas>
+              </div>
+            </div>
+          </section>
+          <section>
+            <h3>Lua Bindings by Compiler</h3>
+            <canvas data-chart="horizontalBar" data-chart-src="benchmark-results/results-release-common.csv">
+              <!--
+                {
+                  "data" : {
+                    "datasets" : [
+                      { "backgroundColor": "rgba(20,220,220,.8)" },
+                      { "backgroundColor": "rgba(220,120,120,.8)" },
+                      { "backgroundColor": "rgba(20,120,220,.8)" }
+                    ]
+                  },
+                  "options": {
+                    "responsive": true,
+                    "scales": {
+                      "xAxes": [{
+                          "stacked": true,
+                          "scaleLabel": {"display": true, "labelString": "Time (nanoseconds)"}
+                        }],
+                      "yAxes": [{ "stacked": true }]
+                    }
+                  }
+                }
+                -->
+            </canvas>
+          </section>
+
+        </section>
+
         <section>
 
         <section data-background-video="media/BluWireless_HST_Background.mp4" data-background-video-loop=true>
@@ -781,7 +921,7 @@ end
         </section>
 
         <section>
-          <h2>Performance</h2>
+          <h2>Advice</h2>
             <ul>
               <span class="fragment" style="color:yellow"><li>MCM spends a lot of time in the SWIG wrapper</li></span>
               <ul>
@@ -893,10 +1033,7 @@ end
               ticks: { fontColor: "#FFF" },
             }
           },
-          line: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ], "borderDash": [ [5,10], [0,0] ] },
-          bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
-          pie: { backgroundColor: [ ["rgba(0,0,0,.8)" , "rgba(220,20,20,.8)", "rgba(20,220,20,.8)", "rgba(220,220,20,.8)", "rgba(20,20,220,.8)"] ]},
-          radar: { borderColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)" ]},
+          bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)", "rgba(255, 159, 64, .8)","rgba(255, 205, 86, .8)", "rgba(153, 102, 255, .8)" ]},
         },
         menu: {
           themes: true
