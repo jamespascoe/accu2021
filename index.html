@@ -713,8 +713,50 @@ end
           <h1>Performance</h1>
         </section>
 
-          <section data-menu-title="Lua Bindings: x86_64">
-            <h3>Select Lua Bindings: x86 64-bit</h3>
+          <section>
+            <h2>Measurement</h2>
+            <span class="fragment" style="color:yellow">How do we evaluate performance?</span><br>
+            <p>
+            <ul>
+              <span class="fragment"><li>Benchmark Suites e.g. <a href="https://github.com/ThePhD/lua-bindings-shootout">Lua Bindings Shootout</a></li></span>
+              <ul>
+                <span class="fragment"><li>16 Lua Bindings</li></span>
+                <span class="fragment"><li><a href="http://www.lua.org/versions.html#5.4">Lua 5.4.2</a> and <a href="http://www.swig.org/">SWIG 4.0.2</a></li></span>
+                <span class="fragment"><li><a href="https://en.wikichip.org/wiki/intel/core_i5/i5-6200u">x86-64 i5-6200u</a> and <a href="https://en.wikipedia.org/wiki/Comparison_of_ARMv8-A_cores">Embedded ARMv8</a></li></span>
+                <span class="fragment"><li><a href="https://llvm.org/">Clang 9/10/11</a></li></span>
+              </ul>
+            </ul>
+          </section>
+
+          <section data-menu-title="Bindings by Compiler">
+            <h3>Lua Bindings by Compiler (x86-64 i5-6200u)</h3>
+            <canvas data-chart="horizontalBar" data-chart-src="benchmark-results/results-release-common.csv">
+              <!--
+                {
+                  "data" : {
+                    "datasets" : [
+                      { "backgroundColor": "rgba(20,220,220,.8)" },
+                      { "backgroundColor": "rgba(220,120,120,.8)" },
+                      { "backgroundColor": "rgba(20,120,220,.8)" }
+                    ]
+                  },
+                  "options": {
+                    "responsive": true,
+                    "scales": {
+                      "xAxes": [{
+                          "stacked": true,
+                          "scaleLabel": {"display": true, "labelString": "Time (nanoseconds)"}
+                        }],
+                      "yAxes": [{ "stacked": true }]
+                    }
+                  }
+                }
+                -->
+            </canvas>
+          </section>
+
+          <section data-menu-title="Lua Bindings: x86-64">
+            <h3>Select Lua Bindings: x86-64 i5-6200u</h3>
             <canvas data-chart="bar">
             <!--
             {
@@ -805,8 +847,8 @@ end
             -->
             </canvas>
           </section>
-          <section data-menu-title="Benchmarks by Architecture">
-            <h3>Aggregated Benchmarks By Architecture</h3>
+          <section data-menu-title="Bindings by Architecture">
+            <h3>Aggregated Bindings By Architecture</h3>
 
             <style>
             .container{
@@ -820,6 +862,40 @@ end
             </style>
 
             <div class="container">
+
+              <div class="col" style="height: 40vh">
+                <canvas data-chart="bar">
+                <!--
+                {
+                  "data" : {
+                    "labels" : ["C", "Sol2", "Sol3", "SWIG"],
+                    "datasets" : [{
+                      "label": "x86-64 i5-6200u",
+                      "backgroundColor": [ "rgba(220,120,120,.8)", "rgba(220,120,120,.8)",
+                                           "rgba(220,120,120,.8)", "rgba(220,120,120,.8)" ],
+                      "data": [33211, 59544, 51419, 73042]
+                     }]
+                  },
+                  "options" : {
+                    "maintainAspectRatio": false,
+                    "legend":
+                    {
+                      "labels": {"boxWidth":10}
+                    },
+                    "scales":
+                    {
+                      "yAxes": [
+                      {
+                        "ticks": {"beginAtZero": true},
+                        "scaleLabel": {"display": true, "labelString": "Time (nanoseconds)"}
+                      }]
+                    }
+                  }
+                }
+                -->
+                </canvas>
+              </div>
+
               <div class="col" style="height: 40vh">
                 <canvas data-chart="bar">
                 <!--
@@ -851,65 +927,7 @@ end
                 </canvas>
               </div>
 
-              <div class="col" style="height: 40vh">
-                <canvas data-chart="bar">
-                <!--
-                {
-                  "data" : {
-                    "labels" : ["C", "Sol2", "Sol3", "SWIG"],
-                    "datasets" : [{
-                      "label": "x86_64 i5-6200u",
-                      "backgroundColor": [ "rgba(220,120,120,.8)", "rgba(220,120,120,.8)",
-                                           "rgba(220,120,120,.8)", "rgba(220,120,120,.8)" ],
-                      "data": [33211, 59544, 51419, 73042]
-                     }]
-                  },
-                  "options" : {
-                    "maintainAspectRatio": false,
-                    "legend":
-                    {
-                      "labels": {"boxWidth":10}
-                    },
-                    "scales":
-                    {
-                      "yAxes": [
-                      {
-                        "ticks": {"beginAtZero": true},
-                        "scaleLabel": {"display": true, "labelString": "Time (nanoseconds)"}
-                      }]
-                    }
-                  }
-                }
-                -->
-                </canvas>
-              </div>
-            </div>
-          </section>
-          <section>
-            <h3>Lua Bindings by Compiler</h3>
-            <canvas data-chart="horizontalBar" data-chart-src="benchmark-results/results-release-common.csv">
-              <!--
-                {
-                  "data" : {
-                    "datasets" : [
-                      { "backgroundColor": "rgba(20,220,220,.8)" },
-                      { "backgroundColor": "rgba(220,120,120,.8)" },
-                      { "backgroundColor": "rgba(20,120,220,.8)" }
-                    ]
-                  },
-                  "options": {
-                    "responsive": true,
-                    "scales": {
-                      "xAxes": [{
-                          "stacked": true,
-                          "scaleLabel": {"display": true, "labelString": "Time (nanoseconds)"}
-                        }],
-                      "yAxes": [{ "stacked": true }]
-                    }
-                  }
-                }
-                -->
-            </canvas>
+           </div>
           </section>
 
         </section>
@@ -950,9 +968,9 @@ end
                 <span class="fragment"><li>std::any, std::optional, std::variant</li></span>
                 <span class="fragment"><li>be mindful of performance</li></span>
               </ul>
-              <span class="fragment" style="color:yellow"><li><a href="https://www.lua.org/versions.html#5.4">Lua 5.4.0</a> is now available</li></span>
+              <span class="fragment" style="color:yellow"><li><a href="https://www.lua.org/versions.html#5.4">Lua 5.4.2</a> is now available</li></span>
               <ul>
-                <span class="fragment"><li><a href="https://foicica.com/lua/">Lua Quick Reference</a> (updated for Lua 5.4.0)</li></span>
+                <span class="fragment"><li><a href="https://foicica.com/lua/">Lua Quick Reference</a> (updated for Lua 5.4)</li></span>
               </ul>
             </ul>
         </section>
