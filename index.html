@@ -373,7 +373,6 @@ how
 Lua: f called with args: how 1 14
 cppFunc_oneline called with args: how 2 14
               </code></pre>
-
           </section>
 
         </section>
@@ -1058,8 +1057,12 @@ end
         </section>
 
         <section>
-          <h2>Advice</h2>
+          <h2>Performance Advice</h2>
             <ul>
+              <span class="fragment" style="color:yellow"><li>Sol3 is fast but you can go faster</li></span>
+              <ul>
+                <span class="fragment"><li>lots of good advice <a href="https://sol2.readthedocs.io/en/latest/performance.html">here</a></li></span>
+              </ul>
               <span class="fragment" style="color:yellow"><li>MCM spends a lot of time in the SWIG wrapper</li></span>
               <ul>
                 <span class="fragment"><li>prefer lightweight typemaps</li></span>
@@ -1082,9 +1085,14 @@ end
               <ul>
                 <span class="fragment"><li>Actions (C++) and Behaviours (Lua)</li></span>
               </ul>
-              <span class="fragment" style="color:yellow"><li>SWIG allows us to map C++20 types to/from Lua</li></span>
+              <span class="fragment" style="color:yellow"><li>Sol3 binds Modern C++ to Lua</li></span>
               <ul>
-                <span class="fragment"><li>std::any, std::optional, std::variant</li></span>
+                <span class="fragment"><li>simple-to-use, fast, ideal for Modern C++</li></span>
+                <span class="fragment"><li>by definition is a C++ to Lua binding</li></span>
+              </ul>
+              <span class="fragment" style="color:yellow"><li>SWIG allows us to map C++ types to/from Lua</li></span>
+              <ul>
+                <span class="fragment"><li>generates bindings in many languages</li></span>
                 <span class="fragment"><li>be mindful of performance</li></span>
               </ul>
               <span class="fragment" style="color:yellow"><li><a href="https://www.lua.org/versions.html#5.4">Lua 5.4.2</a> is now available</li></span>
