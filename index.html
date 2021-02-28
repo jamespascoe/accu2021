@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="dist/theme/league.css" id="theme">
 
     <!-- Theme used for syntax highlighted code -->
-    <!-- <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme"> -->
     <link rel="stylesheet" href="plugin/highlight/github.css" id="highlight-theme">
 
   </head>
@@ -156,7 +155,7 @@
 
         <section>
 
-          <section data-background-video="media/BluWireless_HST_Background.mp4" data-background-video-loop=true>
+          <section data-menu-title="Modern C++ and Lua" data-background-video="media/BluWireless_HST_Background.mp4" data-background-video-loop=true>
             <h1>Combining Modern C++ and Lua</h1>
           </section>
 
@@ -253,7 +252,7 @@ int main([[maybe_unused]] int argc, char ** argv)
           <section>
             <h2>First Example: Build & Run</h2>
               <pre style="width:100%"><code class="plaintext" data-trim data-noescape data-line-numbers="|1-3|4-8|">
-> brew install lua # sudo apt-get -y install lua5.3
+> brew install lua # sudo apt-get -y install lua5.4
 > clang++ -std=c++17 -llua -o lua-cpp lua-cpp.cpp
 > ./lua-cpp lua-cpp.lua
 Lua: f called with args: how 1 14
@@ -264,10 +263,142 @@ how
               </code></pre>
           </section>
 
+        </section>
+        <section>
+
+        <section data-menu-title="Sol3: Binding C++ and Lua" data-background-video="media/BluWireless_HST_Background.mp4" data-background-video-loop=true>
+          <h1>Sol3: Binding Modern C++ and Lua</h1>
+        </section>
+
+          <section>
+            <h2><a href="https://github.com/ThePhD/sol2">Sol3</a></h2>
+            <ul>
+              <span class="fragment"><li><a href="https://github.com/Rapptz/sol">Sol</a>: <a href="https://github.com/Rapptz">Danny Rapptz</a></li></span>
+              <span class="fragment"><ul><li>Last commit: 2015</li></ul></span>
+              <span class="fragment"><li><a href="https://github.com/ThePhD/sol2">Sol2/3 (Sol2 v3)</a>: <a href="https://github.com/ThePhD">JeanHeyd Meneide (ThePhD)</a></li></span>
+              <span class="fragment"><ul><li>Active since 2013, 100+ contributors</li></ul></span>
+              <span class="fragment"><li>Modern C++ Binding for Lua</li></span>
+              <span class="fragment"><ul><li>Header only, <a href="https://sol2.readthedocs.io/en/latest/benchmarks.html">fast</a></li></ul></span>
+              <span class="fragment"><ul><li><a href="https://github.com/ThePhD/sol2#features">Support for Modern C++ types</a></li></ul></span>
+              <span class="fragment"><ul><li>Nice upgrade path</li></ul></span>
+            </ul>
+          </section>
+
+          <section>
+            <h2><a href="https://sol2.readthedocs.io/en/latest/tutorial/all-the-things.html">Sol3: Stack Manipulation</a></h2>
+            <pre class="stretch"><code class="c++" style="width:103%" data-trim data-line-numbers="|15-30|6-13|">
+#include &ltiostream&gt
+
+#define SOL_ALL_SAFETIES_ON 1
+#include &ltsol/sol.hpp&gt
+
+int cppFunc(lua_State *L) {
+  std::cout << "cppFunc called with args:" << std::endl;
+
+  for (int n=1; n <= lua_gettop(L); ++n)
+    std::cout << lua_tostring(L, n) << std::endl;
+
+  return 0;
+}
+
+int main([[maybe_unused]] int argc, char ** argv)
+{
+  // Create a new lua state and open libraries
+  sol::state lua;
+  lua.open_libraries(sol::lib::base, sol::lib::string);
+
+  // Export a C++ function to Lua
+  lua["cppFunc"] = cppFunc;
+
+  // Load and run the Lua file
+  lua.script_file(argv[1]);
+
+  // Call 'f' with the arguments "how", t.x, 14
+  sol::function f = lua["f"];
+  f("how", lua["t"]["x"], 14);
+}
+            </code></pre>
+          </section>
+
+          <section data-menu-title="Sol3 Example Improvement">
+            <h2><a href="https://sol2.readthedocs.io/en/latest/tutorial/all-the-things.html">Sol3: Improved Example</a></h2>
+            <pre class="stretch"><code class="c++" style="width:103%" data-trim data-line-numbers="|6-11|20|">
+#include &ltiostream&gt
+
+#define SOL_ALL_SAFETIES_ON 1
+#include &ltsol/sol.hpp&gt
+
+int cppFunc_oneline(std::string str, int a, int b) {
+  std::cout << "cppFunc_oneline called with args: " <<
+    str << " " << a << " " << b << std::endl;
+
+  return 0;
+}
+
+int main([[maybe_unused]] int argc, char ** argv[1]);
+{
+  // Create a new lua state and open libraries
+  sol::state lua;
+  lua.open_libraries(sol::lib::base, sol::lib::string);
+
+  // Export a C++ function to Lua
+  lua["cppFunc"] = cppFunc_oneline;
+
+  // Load and run the Lua file
+  lua.script_file(argv[1]);
+
+  // Call 'f' with the arguments "how", t.x, 14
+  sol::function f = lua["f"];
+  f("how", lua["t"]["x"], 14);
+}
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Sol3 Example: Build & Run</h2>
+              <pre style="width:101%"><code class="plaintext" data-trim data-noescape data-line-numbers="|1-3|4-8|">
+> brew install lua # sudo apt-get -y install lua5.4
+> clang++ -std=c++17 -I sol2/include -llua -o lua-sol3 lua-sol3.cpp
+> ./lua-sol3 lua-cpp.lua
+Lua: f called with args: how 1 14
+cppFunc called with args:
+how
+2
+14
+              </code></pre>
+
+              <pre style="width:101%"><code class="plaintext" data-trim data-noescape data-line-numbers="|3-4|">
+> clang++ -std=c++17 -I sol2/include -llua -o lua-sol3 lua-sol3-ol.cpp
+> ./lua-sol3 lua-cpp.lua
+Lua: f called with args: how 1 14
+cppFunc_oneline called with args: how 2 14
+              </code></pre>
+
+          </section>
+
+        </section>
+        <section>
+
+        <section data-background-video="media/BluWireless_HST_Background.mp4" data-background-video-loop=true>
+          <h1>SWIG and LuaChat</h1>
+        </section>
+
+          <section>
+            <h2><a href="http://swig.org">SWIG</a></h2>
+            <ul>
+              <span class="fragment"><li>Simplified Wrapper and Interface Generator</li></span>
+              <span class="fragment"><li>Produces C++ bindings for many target languages</li></span>
+              <span class="fragment"><li>Generates Lua stack calls for std C++ types</li></span>
+              <span class="fragment"><ul><li>std::string, std::vector, std::map etc.</li></ul></span>
+              <span class="fragment"><li>C++20 types can be supported with typemaps</li></span>
+              <span class="fragment"><li>Integrates well with CMake</li></span>
+            </ul>
+          </section>
+
           <section>
             <h2><a href="http://www.github.com/jamespascoe/">LuaChat</a></h2>
             <ul>
-              <span class="fragment"><li>Unix 'talk' program (written in C++17 & Lua 5.3.5)</li></span>
+              <span class="fragment"><li>Unix 'talk' program (written in C++17 & Lua 5.4.2)</li></span>
               <span class="fragment"><li>Available on <a href="http://www.github.com/jamespascoe/">GitHub</a> (MIT license)</li></span>
               <span class="fragment"><li><a href="http://think-async.com/Asio/asio-1.12.2/doc/">Asio</a> for asynchronous TCP and timers</li></span>
               <span class="fragment"><li><a href="https://github.com/gabime/spdlog">spdlog</a> for logging,
@@ -305,18 +436,6 @@ luarocks install luaposix
 mkdir build; cd build; cmake ../LuaChat; make
 ./src/lua_chat
             </code></pre>
-          </section>
-
-          <section>
-            <h2><a href="http://swig.org">SWIG</a></h2>
-            <ul>
-              <span class="fragment"><li>Simplified Wrapper and Interface Generator</li></span>
-              <span class="fragment"><li>Produces C++ bindings for many target languages</li></span>
-              <span class="fragment"><li>Generates Lua stack calls for std C++ types</li></span>
-              <span class="fragment"><ul><li>std::string, std::vector, std::map etc.</li></ul></span>
-              <span class="fragment"><li>C++20 types can be supported with typemaps</li></span>
-              <span class="fragment"><li>Integrates well with CMake</li></span>
-            </ul>
           </section>
 
           <section>

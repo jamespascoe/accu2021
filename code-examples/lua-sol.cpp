@@ -1,7 +1,7 @@
+#include <iostream>
+
 #define SOL_ALL_SAFETIES_ON 1
 #include <sol/sol.hpp>
-
-#include <iostream>
 
 int cppFunc(lua_State *L) {
   std::cout << "cppFunc called with args:" << std::endl;
