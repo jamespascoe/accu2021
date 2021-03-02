@@ -19,7 +19,9 @@
   <body>
     <div class="reveal">
       <div class="slides">
-        <section>
+        <section data-state="hideControls" data-background-image="media/Title-Slide.jpg">
+        </section>
+        <section data-state="showControls">
           <h1>C++20 + Lua = Flexibility</h1>
           <p>
             <small>
@@ -1181,12 +1183,22 @@ end
           bar: { backgroundColor: [ "rgba(20,220,220,.8)" , "rgba(220,120,120,.8)", "rgba(20,120,220,.8)", "rgba(255, 159, 64, .8)","rgba(255, 205, 86, .8)", "rgba(153, 102, 255, .8)" ]},
         },
         menu: {
-          themes: true
+          themes: true,
+          delayInit: true
         },
         pdfSeparateFragments: false,
         // Learn about plugins: https://revealjs.com/plugins/
         plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu, RevealChart ]
       });
+
+      Reveal.addEventListener('hideControls', function() {
+        Reveal.configure({controls: false});
+      }, false );
+
+      Reveal.addEventListener('showControls', function() {
+        Reveal.configure({controls: true});
+        Reveal.getPlugin("menu").initialiseMenu();
+      }, false );
    </script>
   </body>
 </html>
