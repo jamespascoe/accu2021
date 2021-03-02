@@ -19,9 +19,12 @@
   <body>
     <div class="reveal">
       <div class="slides">
-        <section data-state="hideControls" data-background-image="media/Title-Slide.jpg">
+        <section id="Title-Slide"
+                 data-state="hideControls"
+                 data-menu-title="Title Slide"
+                 data-background-image="media/Title-Slide.jpg">
         </section>
-        <section data-state="showControls">
+        <section>
           <h1>C++20 + Lua = Flexibility</h1>
           <p>
             <small>
@@ -1195,9 +1198,23 @@ end
         Reveal.configure({controls: false});
       }, false );
 
-      Reveal.addEventListener('showControls', function() {
-        Reveal.configure({controls: true});
-        Reveal.getPlugin("menu").initialiseMenu();
+      Reveal.addEventListener('slidechanged', function() {
+        /* Ensure that the Reveal controls and Menu are available on
+         * all slides other than the 'Title-Slide'.
+         */
+        slide_id = Reveal.getCurrentSlide().getAttribute("id");
+
+        if (slide_id !== "Title-Slide") {
+          config = Reveal.getConfig();
+          if (config["controls"] !== true) {
+            Reveal.configure({controls: true});
+          }
+
+          menu = Reveal.getPlugin("menu");
+          if (!menu.isMenuInitialised()) {
+            menu.initialiseMenu();
+          }
+        }
       }, false );
    </script>
   </body>
