@@ -28,7 +28,7 @@
           <h1>C++20 + Lua = Flexibility</h1>
           <p>
             <small>
-              James (Jim) Pascoe<br>
+              Jim (James) Pascoe<br>
               <a href="http://www.james-pascoe.com">http://www.james-pascoe.com</a><br>
               <a href="mailto:james@james-pascoe.com">james@james-pascoe.com</a><p>
 
@@ -325,7 +325,7 @@ int main([[maybe_unused]] int argc, char ** argv)
             </code></pre>
           </section>
 
-          <section data-menu-title="Sol3 Example Improvement">
+          <section data-menu-title="Sol3: Improved Example">
             <h2><a href="https://sol2.readthedocs.io/en/latest/tutorial/all-the-things.html">Sol3: Improved Example</a></h2>
             <pre class="stretch"><code class="c++" style="width:103%" data-trim data-line-numbers="|6-11|20|">
 #include &ltiostream&gt
@@ -377,6 +377,102 @@ how
 > ./lua-sol3 lua-cpp.lua
 Lua: f called with args: how 1 14
 cppFunc_oneline called with args: how 2 14
+              </code></pre>
+          </section>
+
+          <section>
+            <h2>Sol3: Complex Example</h2>
+            <pre class="stretch"><code class="c++" style="width:100%" data-trim data-line-numbers="|10|14-16|20-27|29-45|49-55|57-67|69-71|">
+              <script type="text/template">
+#include <iostream>
+#include <vector>
+#include <string>
+#include <chrono>
+#include <utility>
+
+#define SOL_ALL_SAFETIES_ON 1
+#include <sol/sol.hpp>
+
+#include "date.h"
+
+class timestamped_messages {
+
+  using ts_msg = std::pair <std::string, std::string>;
+  using ts_msg_vec = std::vector<ts_msg>;
+  ts_msg_vec ts_msgs;
+
+public:
+
+  using value_type = ts_msg_vec::value_type;
+  using iterator = ts_msg_vec::iterator;
+  using size_type = ts_msg_vec::size_type;
+
+  iterator begin() { return iterator(ts_msgs.begin()); }
+  iterator end() { return iterator(ts_msgs.end()); }
+  size_type size() const noexcept { return ts_msgs.size(); }
+  bool empty() const noexcept { return ts_msgs.empty(); }
+
+  void add_msg(std::string const& msg) {
+
+    using namespace std::chrono;
+
+    auto now = system_clock::now();
+    time_t now_t = system_clock::to_time_t(now);
+    tm *date = std::localtime(&now_t);
+    date->tm_hour = 0;
+    date->tm_min = 0;
+    date->tm_sec = 0;
+    auto midnight = system_clock::from_time_t(std::mktime(date));
+
+    std::ostringstream oss;
+    oss << date::hh_mm_ss(now-midnight);
+
+    ts_msgs.push_back({ oss.str(), msg });
+  }
+};
+
+int main() {
+  sol::state lua;
+  lua.open_libraries(sol::lib::base);
+
+  lua.new_usertype<timestamped_messages>(
+    "timestamped_messages",
+    "add_msg", &timestamped_messages::add_msg
+  );
+
+  lua.script(R"(
+    ts_msgs = timestamped_messages.new()
+    ts_msgs:add_msg("msg 1")
+    ts_msgs:add_msg("msg 2")
+    ts_msgs:add_msg("msg 3")
+
+    for _, ts, msg in pairs(ts_msgs)
+    do
+      print("Lua: " .. tostring(ts) .. " " .. tostring(msg))
+    end
+  )");
+
+  timestamped_messages& ts_msgs = lua["ts_msgs"];
+  for (auto [ts, msg] : ts_msgs)
+    std::cout << "C++: " << ts << " " << msg << std::endl;
+}
+              </script>
+            </code></pre>
+          </section>
+
+          <section data-menu-title="Sol3 Complex: Build & Run">
+            <h2>Sol3 Complex Example: Build & Run</h2>
+              <pre style="width:100%"><code class="plaintext" data-trim data-noescape data-line-numbers="|1-2|3|4|5-10|">
+> git clone https://github.com/HowardHinnant/date.git
+> git clone https://github.com/ThePhD/sol2.git
+> clang++ -std=c++2a -I sol2/include/ -I date/include/date -l lua -o complex complex.cpp
+> ./complex
+Lua: 21:35:10.437971 msg 1
+Lua: 21:35:10.438393 msg 2
+Lua: 21:35:10.438403 msg 3
+C++: 21:35:10.437971 msg 1
+C++: 21:35:10.438393 msg 2
+C++: 21:35:10.438403 msg 3
               </code></pre>
           </section>
 

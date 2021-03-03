@@ -1,3 +1,6 @@
 [submodule "code-examples/sol2"]
 	path = code-examples/sol2
 	url = https://github.com/ThePhD/sol2.git
+[submodule "code-examples/date"]
+	path = code-examples/date
+	url = https://github.com/HowardHinnant/date.git
