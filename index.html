@@ -120,7 +120,10 @@
           <img class="stretch" data-src="media/devices.png" style="background:none; border:none; box-shadow:none;">
           </section>
 
-          <section section data-menu-title="Blu Wireless How It Works" data-background-video="media/BluWireless_How_It_Works.mp4" id="video"></section>
+          <section data-menu-title="Blu Wireless How It Works"
+                   data-background-video="media/BluWireless_How_It_Works.mp4"
+                   id="video">
+          </section>
 
           <section>
             <h2>Connection Management</h2>
@@ -144,7 +147,7 @@
             <h2>Mobile Connection Manager</h2>
             <ul>
               <span class="fragment"><li>Complete redesign</li></span>
-              <span class="fragment"><li>Decoupled architecture (C++17 & Lua 5.3.5)</li></span>
+              <span class="fragment"><li>Decoupled architecture (C++17 & Lua 5.4.2)</li></span>
               <span class="fragment fade-in" style="color:yellow"><li>Actions (C++): 'Scan', 'Connect', 'Probe' etc.</li></span>
               <span class="fragment fade-in" style="color:yellow"><li>Behaviours (Lua): implement 'beam choreography'</li></span>
               <span class="fragment fade-in" style="color:yellow"><li>Changes can be made in the field by FAEs</li></span>
@@ -214,7 +217,7 @@ end
             <h2><a href="http://www.lua.org/manual/5.3/manual.html#4.8">First Example: C++</a></h2>
             <pre class="stretch"><code class="c++" style="width:103%" data-trim data-line-numbers="|4-11|15-26|28-35|">
 #include &ltiostream&gt
-#include "lua5.3/lua.hpp"
+#include "lua.hpp"
 
 int cppFunc(lua_State *L) {
   std::cout << "cppFunc called with args:" << std::endl;
@@ -258,7 +261,7 @@ int main([[maybe_unused]] int argc, char ** argv)
             <h2>First Example: Build & Run</h2>
               <pre style="width:100%"><code class="plaintext" data-trim data-noescape data-line-numbers="|1-3|4-8|">
 > brew install lua # sudo apt-get -y install lua5.4
-> clang++ -std=c++17 -llua -o lua-cpp lua-cpp.cpp
+> clang++ -std=c++2a -llua -o lua-cpp lua-cpp.cpp
 > ./lua-cpp lua-cpp.lua
 Lua: f called with args: how 1 14
 cppFunc called with args:
@@ -361,9 +364,10 @@ int main([[maybe_unused]] int argc, char ** argv[1]);
 
           <section>
             <h2>Sol3 Example: Build & Run</h2>
-              <pre style="width:101%"><code class="plaintext" data-trim data-noescape data-line-numbers="|1-3|4-8|">
+              <pre style="width:101%"><code class="plaintext" data-trim data-noescape data-line-numbers="|1-3|4-9|">
 > brew install lua # sudo apt-get -y install lua5.4
-> clang++ -std=c++17 -I sol2/include -llua -o lua-sol3 lua-sol3.cpp
+> git clone https://github.com/ThePhD/sol2.git
+> clang++ -std=c++2a -I sol2/include -llua -o lua-sol3 lua-sol3.cpp
 > ./lua-sol3 lua-cpp.lua
 Lua: f called with args: how 1 14
 cppFunc called with args:
@@ -372,8 +376,8 @@ how
 14
               </code></pre>
 
-              <pre style="width:101%"><code class="plaintext" data-trim data-noescape data-line-numbers="|3-4|">
-> clang++ -std=c++17 -I sol2/include -llua -o lua-sol3 lua-sol3-ol.cpp
+              <pre style="width:101%"><code class="plaintext" data-trim data-noescape data-line-numbers="|1-2|3-4|">
+> clang++ -std=c++2a -I sol2/include -llua -o lua-sol3 lua-sol3-ol.cpp
 > ./lua-sol3 lua-cpp.lua
 Lua: f called with args: how 1 14
 cppFunc_oneline called with args: how 2 14
@@ -381,8 +385,8 @@ cppFunc_oneline called with args: how 2 14
           </section>
 
           <section>
-            <h2>Sol3: Complex Example</h2>
-            <pre class="stretch"><code class="c++" style="width:100%" data-trim data-line-numbers="|10|14-16|20-27|29-45|49-55|57-67|69-71|">
+            <h2>Sol3: Container Example</h2>
+            <pre class="stretch"><code class="c++" style="width:100%" data-trim data-line-numbers="|10|14-16|20-27|29-48|51-57|59-69|71-73|">
               <script type="text/template">
 #include <iostream>
 #include <vector>
@@ -416,6 +420,8 @@ public:
 
     using namespace std::chrono;
 
+    /* Add human-readable microsecond resolution timestamps
+     * to messages e.g. 07:05:57.413381 */
     auto now = system_clock::now();
     time_t now_t = system_clock::to_time_t(now);
     tm *date = std::localtime(&now_t);
@@ -460,13 +466,13 @@ int main() {
             </code></pre>
           </section>
 
-          <section data-menu-title="Sol3 Complex: Build & Run">
-            <h2>Sol3 Complex Example: Build & Run</h2>
+          <section data-menu-title="Sol3 Container: Build & Run">
+            <h2>Sol3 Container Example: Build & Run</h2>
               <pre style="width:100%"><code class="plaintext" data-trim data-noescape data-line-numbers="|1-2|3|4|5-10|">
 > git clone https://github.com/HowardHinnant/date.git
 > git clone https://github.com/ThePhD/sol2.git
-> clang++ -std=c++2a -I sol2/include/ -I date/include/date -l lua -o complex complex.cpp
-> ./complex
+> clang++ -std=c++2a -I sol2/include/ -I date/include/date -l lua -o container container.cpp
+> ./container
 Lua: 21:35:10.437971 msg 1
 Lua: 21:35:10.438393 msg 2
 Lua: 21:35:10.438403 msg 3
