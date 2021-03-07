@@ -519,7 +519,7 @@ C++: 21:35:10.438403 msg 3
           <section>
             <h2><a href="http://www.github.com/jamespascoe/">LuaChat</a></h2>
             <ul>
-              <span class="fragment"><li>Unix 'talk' program (written in C++17 & Lua 5.4.2)</li></span>
+              <span class="fragment"><li>Unix 'talk' program (written in C++17 & Lua 5.3/5.4)</li></span>
               <span class="fragment"><li>Available on <a href="http://www.github.com/jamespascoe/">GitHub</a> (MIT license)</li></span>
               <span class="fragment"><li><a href="http://think-async.com/Asio/asio-1.12.2/doc/">Asio</a> for asynchronous TCP and timers</li></span>
               <span class="fragment"><li><a href="https://github.com/gabime/spdlog">spdlog</a> for logging,
@@ -549,7 +549,7 @@ mkdir build; cd build; cmake ../LuaChat; make
 ./src/lua_chat
             </code></pre>
             <p>
-            MacOS (Catalina):
+            MacOS (Catalina/Big Sur):
             <pre><code class="plaintext" data-trim data-noescape data-line-numbers="">
 git clone https://github.com/jamespascoe/LuaChat.git
 brew install lua luarocks swig
@@ -561,7 +561,7 @@ mkdir build; cd build; cmake ../LuaChat; make
 
           <section>
             <h2>LuaChat SWIG CMake</h2>
-            <pre class="stretch"><code class="CMake" data-trim data-line-numbers="|2|8|">
+            <pre><code class="CMake stretch" data-trim data-line-numbers="|2|8|">
 set(LUA_CHAT_SWIG_SRCS
     lua_chat_actions.i lua_chat_action_log.cpp)
 
@@ -586,7 +586,7 @@ target_link_libraries(actions PRIVATE std::filesystem)
 
           <section>
             <h2>LuaChat SWIG Input</h2>
-            <pre class="stretch"><code class="" data-trim data-line-numbers="|1|3|5-11|13-14|16-25|27-32|">
+            <pre><code class="" data-trim data-line-numbers="|1|3|5-11|13-14|16-25|27-32|">
 %module Actions
 
 %include &ltstd_string.i&gt
@@ -634,7 +634,7 @@ target_link_libraries(actions PRIVATE std::filesystem)
 
           <section>
             <h2><a href="https://gist.github.com/jamespascoe/523a5cf4114a1230b4d8a386bb8cd8ba">Lua Callback: SWIG Typemap</a></h2>
-            <pre class="stretch"><code class="" data-trim data-line-numbers="|1-3|5-17|19|">
+            <pre><code class="stretch" data-trim data-line-numbers="|1-3|5-17|19|">
 %typemap(typecheck) Example::Callback & {
   $1 = lua_isfunction(L, $input);
 }
@@ -696,7 +696,7 @@ target_link_libraries(actions PRIVATE std::filesystem)
             <h2><a href="http://think-async.com/Asio/asio-1.12.2/doc/asio/tutorial/tutdaytime3.html#asio.tutorial.tutdaytime3.the_tcp_connection_class">TCP Connections</a></h2>
 
             </code></pre>
-            <pre class="stretch"><code class="c++" data-trim data-line-numbers="|4-8,15-16|10-12,18-19|">
+            <pre><code class="c++ stretch" data-trim data-line-numbers="|4-8,15-16|10-12,18-19|">
 class tcp_connection
 {
 public:
@@ -723,7 +723,7 @@ private:
           <section>
             <h2>Connection Handling</h2>
             </code></pre>
-            <pre class="stretch"><code class="c++" data-trim data-line-numbers="|2-3|4,6|12-20|">
+            <pre><code class="c++ stretch" data-trim data-line-numbers="|2-3|4,6|12-20|">
 Talk::Talk(unsigned short port)
     : m_acceptor(m_io_context,
                 tcp::endpoint(tcp::v4(), port)) {
@@ -752,7 +752,7 @@ void Talk::start_accept() {
           <section>
             <h2>Accepting Connections</h2>
             </code></pre>
-            <pre class="stretch"><code class="c++" data-trim data-line-numbers="|6-15|19|">
+            <pre><code class="c++ stretch" data-trim data-line-numbers="|6-15|19|">
 void Talk::handle_accept(tcp_connection::pointer connection,
                          asio::error_code const& error) {
   if (!error) {
@@ -779,7 +779,7 @@ void Talk::handle_accept(tcp_connection::pointer connection,
           <section>
             <h2>Storing Data</h2>
             </code></pre>
-            <pre class="stretch"><code class="c++" data-trim data-line-numbers="|4-5|7-12|">
+            <pre><code class="c++ stretch" data-trim data-line-numbers="|4-5|7-12|">
 void Talk::handle_read(asio::error_code const& error,
                        std::size_t bytes_transferred,
                        tcp_connection::pointer connection) {
