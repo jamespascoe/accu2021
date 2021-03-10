@@ -1,6 +1,19 @@
-C++20 + Lua = Flexibility
+Pre-Presentation Reminders
+--------------------------
 
-Hi and good morning, good afternoon or good evening depending on where you are - my name is Jim Pascoe and today we are going to talk about combining C++20 with Lua. If anybody is intrigued by the title, its an homage to Niklaus Wirth's superb text book 'Algorithms + Data Structures = Programs', which I found on ebay for very little money, so I wanted to save the book from obscurity or destruction and urge you to do the same - there is a lot of wisdom in these classic texts (genius at work).
+1. When enabling screen share - be sure to check 'share my audio’ for the video
+2. Set audio to 50% on Study-iMac
+3. Disable notifications
+4. Share the chrome tab on full-screen
+5. When annotating - use the full width pencil on black
+6. Put laptop on the right of the monitor (to avoid looking completely away from the screen) - Use this for the Q&A
+7. Need to record the audio!!!
+8. Set amphetamine on laptop
+
+C++20 + Lua = Flexibility
+-------------------------
+
+Hello and good morning, good afternoon or good evening depending on where you are - my name is Jim Pascoe and today we are going to talk about combining C++20 with Lua. This is a major update of a talk I gave at CppOnSea 2020, so if you’ve seen the CppOnSea talk then, don’t worry, there is plenty of new content, if you haven’t seen my CppOnSea talk, then great you get it all fresh.
 
 A few items to note - the slides are online and this is the URL, so if you want to follow along from the comfort of your own browser then please do so. You can change the theme by clicking on the hamburger icon. Also, I’ve linked to relevant sources of further information, so do click around. And, this is the GitHub link for the example code which accompanies the talk. More about that later. If you would like to ask a question, please do so in the Q&A panel - I'll answer them as they pop up - its possibly a bit more natural that way.
 
@@ -8,19 +21,21 @@ Overview
 
 What is the purpose of this talk? In a nutshell, it is this <click> - a tutorial on combining C++20 with Lua 5.4.2 and in particular <click> I am here to offer up-to-date practical advice with working code that you can. If you google 'how to combine C++ with Lua' what you will get is a lot of hits, some relevant to today, some defunct. So the whole premise of my talk is to short-circuit all of that and to offer some guidance on how to get started without going down some rabit hole that was defunct years ago.
 
-As part of that we are going to look at a real-world example of where combining C++ and Lua is useful. And I think it helps to have some idea of why you might want to deploy this technique in mind as we progress. Next, we are going to discuss all the juicy details of how to actually combine C++ and Lua and we are going to focus in detail on two binding technologies: Sol3 and Swig, including a C++/Lua starter project called LuaChat. As part of that we will talk about benchmarking and concurrency (two of my favourite topics) before we get down to performance advice and the conclusion.
+As part of that we are going to look at a real-world example of where combining C++ and Lua is useful. And I think it helps to have some idea of why you might want to deploy this technique in mind as we progress. Next, we are going to discuss all the juicy details of how to actually combine C++ and Lua and we are going to focus in detail on two binding technologies: Sol3 and Swig, including a C++/Lua starter project called LuaChat. Sol3 is a modern C++ to Lua binding and, as such, provides a number of really nice C++ abstractions to talk to Lua (and vice-versa), whereas, SWIG has less abstraction, but has the benefit that you can generate bindings for lots of languages from the same code, so Lua, Python, Go. As part of that we will talk about benchmarking and concurrency (two of my favourite topics) before we get down to performance advice and the conclusion.
 
 So, if by the end of the talk, you have a better idea of how to combine modern C++ and Lua and you have some up-to-date code examples to start with, then I will have achieved my objective.
 
 Why Combine C++ and Lua?
 
-So, why would you want to combine C++ and Lua? In a word, it is this <click> flexibility and in three words its really this <click> fleibility post release. And in particular, what this means is <click> that the behaviour of code can be modified after it has been shipped. So, you can add debug, explore previously unknown requirements <click>, modifications are fast, no design, implement, test, CI/CD cycle. Barrier to entry is much lower, so FAEs, Architects, Customers etc. can all write code, which if you are a bit careful in how you allow that, means that your software maintenance scales, because every little modification is not being bottlenecked through the C++ team.
+So, why would you want to combine C++ and Lua? In a word, it is this <click> flexibility and in three words its really this <click> flexibility post release. And in particular, what this means is <click> that the behaviour of code can be modified after it has been shipped. Now this is very powerful <click> as it allows us to cope with future unknowns <click> proactively. And I’ve emphasised ‘proactive’ for a good reason. Most companies or institutions where I have worked approach software development in a similar way, in that, there is a tacit understanding that the software development methodology is that you do some form of upfront requirements gathering, followed by a period of development, test and ship and maybe this is bundled up in an agile framework, but these are the project’s macro phases. And then code gets shipped and the view is we react to whatever comes up, so bugs, new requirements and we hope that we can react fast enough and scale to be successful. What this methodology says, is rather than wait to see what happens, we will recognise that we are going to need to respond to bug reports, change requests and new requirements upfront and we are going to engineer a piece of software that gives us the flexibility to cope with that down the line.   
+
+So, you can add debug, explore previously unknown requirements <click>, modifications are fast, no design, implement, test, CI/CD cycle. Barrier to entry is much lower, so FAEs, Architects, Customers etc. can all write code, which if you are a bit careful in how you allow that, means that your software maintenance scales, because every little modification is not being bottlenecked through the C++ team.
 
 Generally speaking this is a useful technique to have in your toolkit. Lua is fast, you can build it with any ANSI C compiler and its small, of the order of a few hundred kilobytes even including the libraries.
 
 High Speed Transport
 
-Lets look at an example. It's well known that the combination of C++ and Lua is used extensively in the games industry, but the example I am going to draw on today is from the high-end embedded networking domain, so devices like high-speed networking routers, not small IoT type devices.
+Lets look at an example. It's well known that the combination of C++ and Lua is used extensively in the games industry, but the example I am going to draw on today is from the high-end embedded networking domain, so by high-end embedded, I mean devices like high-speed networking routers, not small IoT type devices. So, the example we are going to look at is about putting long-range high-bandwidth IP radio links on fast moving vehicles, so like, trains and race cars.
 
 Blu Wireless
 
@@ -34,7 +49,7 @@ The track-side units are mounted on poles on the side of the track at a spacing 
 
 Video
 
-I going to show a short 40 second video, which I think illustrates the application quite well. There are a few things to notice: 1) train is moving quickly, 2) there is a lot of variation in the environment: reflective surfaces, weather, terrain, tunnels, stations, 3) this notion of ‘beam choreography’, that is, the sequencing of connections, disconnection and hangovers.
+I going to show a short second video, which I think illustrates the application quite well. There are a few things to notice: 1) train is moving quickly, 2) there is a lot of variation in the environment: reflective surfaces, weather, terrain, tunnels, stations, 3) this notion of ‘beam choreography’, that is, the sequencing of connections, disconnection and hangovers.
 
 Connection Management
 
@@ -54,8 +69,6 @@ Here is the MCM architecture. The Lua behaviour is at the top, so closest to the
 
 Combining Modern C++ and Lua
 
-Any questions?
-
 Lua
 
 What is it? It’s a lightweight very embeddable scripting language. It’s dynamically typed and runs on byte code, though you can precompile code and there are excellent JIT engines available. It has a simple syntax with an emphasis on meta-mechanisms and this is the reason that the interpreter is so small - in fact, IIRC the Lua interpreter compiles down to 280KB on Intel with an O3 build (and its about another 450KB for the libraries), so it will easily fit in L2. The key data abstraction in Lua is the ‘table’ which is a ‘map’ or associative array and when we talk about meta-mechanisms in Lua, then this is the prime example, that is, you can build any other data structure from tables e.g. arrays, trees etc.
@@ -71,6 +84,8 @@ First Example: Lua
 (Clickthroughs x 3)
 
 This is an example of how to call a Lua function from C++ and how to call C++ from Lua. Lets start with the Lua code and by the way, these examples are all compilable and runnable. If you cut-and-paste these examples off of the slide into files, you should be able to get them running with very little effort (I’ve got some build and run instructions coming up). We create a table and define a function ‘f’ which prints out its arguments and calls a C++ function. Note that this code wont do anything if we run it in the Lua interpreter - we are simply defining ‘t’ and ‘f’.
+
+Note, that we will use the same Lua code when we discuss Sol3 in a minute.
 
 First Example: C++
 
@@ -88,11 +103,59 @@ First Example: Build and Run
 
 <explain build instructions>
 
+Sol3: Binding Modern C++ and Lua
+
+So hopefully that has given you some idea of how the low-level Lua to C++ interactions work and certainly, when you start working with Sol and looking at SWIG wrappers, an understanding of how the Lua stack operates is vital.
+
+Let’s look at an abstraction <click>
+
+Sol3
+
+<click> Bit of history, in the beginning there was Sol (the complement to Lua’s moon) - a C++ library for binding C++ to Lua by Danny Rapptz. And that was successful and built up a good user base, then the maintainer-ship transferred to JeanHeyd Meneide in 2013 and this led to the development of Sol2.
+
+<click through and discuss>
+
+Sol3: Stack Manipulation
+
+Let’s briefly remind ourselves of what the code looks like if we are using the Lua C API.
+
+<navigate to: First Example: C++> the main function is 25 lines of code, there are magic numbers and the code feels a bit fragile and tricky to maintain especially if you have a lot of this code.
+
+<navigate to: Sol3: Stack Manipulation> <click to highlight main function>. Immediately we notice that main has now reduced to 15 lines, so we’ve saved 10 lines of code. The other qualitative aspect is that the readability has improved massively. <Talk through code>. <click> Also, you can see that I have left the original ‘cppFunc’ in place and I haven’t touched the Lua code. So, this is one of the nice upgrade features that Sol provides.
+
+Sol3: Improved Example
+
+Now, I can refine cppFunc, so now I can use modern C++ types and I can export the function into the Lua space. And, I still haven’t changed the Lua.
+
+Sol3 Example: Build & Run
+
+<click> Describe package installation, highlight building from source being easy and good to get connected by source.
+
+<click through and explain>
+
+Sol3: Container Example
+
+Here’s a more complex example. Let’s say we want to create a container of messages in C++ and provide those facilities to Lua which will implement a behaviour. In this case, we are going to define a message as a string with a timestamp (which is also represented as a string - to be human readable). But, there’s an additional requirement, in that, we want to timestamps to be human readable, but with microsecond resolution. 
+
+<click>. So the first thing I am going to point out is that this example uses Howard Hinnant’s excellent date library, which, if you haven’t looked at, I would highly recommend - its on Howard’s github. 
+
+If we look at the type, the first thing we do is to define some type aliases and declare a private vector of messages. <click> This signature, whilst being useful in its own right, signals to Sol that this is a container type, and what Sol does is under the covers, it sets up the Lua metatabling so that this type works as a Lua table. Now lets look at this add_msg method.
+
+<explain add_msg method>
+
+<explain main> Point out that using Raw string literals is a nice way to add unit tests / check that the interface to the code is as we would expect. 
+
+SWIG
+
+SWIG is a binding technology that has been actively developed since about 1996. Its very mature, stable and 
+
+Lets look at these SWIG wrappers I keep mentioning. The stack operations that we saw in the ‘First Example’ are (to my mind) primitives, which in the context of Modern C++ you don’t necessarily want to manipulate directly. What we need is an abstraction and SWIG is a tool which provides that.
+
+<explain bullets>
+
 LuaChat
 
-So hopefully that has given you some idea of how the low-level Lua to C++ interactions work and certainly, when you start looking at SWIG wrappers, an understanding of how the Lua stack operates is vital.
-
-Lets step forward and look at some Modern C++. What I have done is to create a ‘starter’ application called LuaChat which you can clone from my GitHub and use as the basis for your own combined C++ and Lua projects. Jason Turner, who was here last year, published a C++ starter project a while ago that was very popular, so I thought I would do something similar for C++ and Lua.
+A while ago, Jason Turner, who was at ACCU 2019, published a C++ starter project a while ago that was very popular, so I thought I would do something similar for C++ and Lua. So, what I have done is to create a ‘starter’ application called LuaChat which you can clone from my GitHub and use as the basis for your own combined C++ and Lua projects.
 
 <explain bullet points>
 
@@ -106,12 +169,6 @@ Build Instructions
 
 Here are the build instructions. You should be able to cut-and-paste this off of the slide.
 I’ve tested this on a few machines. When you run this, LuaChat should print usage. I am very happy to receive bug reports.
-
-SWIG
-
-Lets look at these SWIG wrappers I keep mentioning. The stack operations that we saw in the ‘First Example’ are (to my mind) primitives, which in the context of Modern C++ you don’t necessarily want to manipulate directly. What we need is an abstraction and SWIG is a tool which provides that.
-
-<explain bullets>
 
 LuaChat SWIG CMake
 

@@ -67,7 +67,7 @@
             <span class="fragment"><li>Behaviour can be modified after code is shipped</li></span>
             <span class="fragment">
               <ul>
-                <li>Add debug, explore new requirements</li>
+                <li>Cope with future unknowns <span class="fragment" style="color:yellow">proactively</span></li>
               </ul>
             </span>
             <span class="fragment"><li>Modifications are fast</li></span>
@@ -386,7 +386,7 @@ cppFunc_oneline called with args: how 2 14
 
 class timestamped_messages {
 
-  using ts_msg = std::pair <std::string, std::string>;
+  using ts_msg = std::pair<std::string, std::string>;
   using ts_msg_vec = std::vector<ts_msg>;
   ts_msg_vec ts_msgs;
 
@@ -534,7 +534,7 @@ mkdir build; cd build; cmake ../LuaChat; make
 ./src/lua_chat
             </code></pre>
             <p>
-            MacOS (Catalina/Big Sur):
+            MacOS (Big Sur):
             <pre><code class="plaintext" data-trim data-noescape data-line-numbers="">
 git clone https://github.com/jamespascoe/LuaChat.git
 brew install lua luarocks swig
@@ -708,7 +708,7 @@ private:
           <section>
             <h2>Connection Handling</h2>
             </code></pre>
-            <pre><code class="c++ stretch" data-trim data-line-numbers="|2-3|4,6|12-20|">
+            <pre><code class="c++ stretch" data-trim data-line-numbers="|2-3|4|12-20|6|">
 Talk::Talk(unsigned short port)
     : m_acceptor(m_io_context,
                 tcp::endpoint(tcp::v4(), port)) {
@@ -768,7 +768,7 @@ void Talk::handle_accept(tcp_connection::pointer connection,
 void Talk::handle_read(asio::error_code const& error,
                        std::size_t bytes_transferred,
                        tcp_connection::pointer connection) {
-  // Check error - 'eof' means that the remote connection has closed
+  // Check error - 'eof' means remote connection closed
   if (!error || error == asio::error::eof) {
 
     // Limit the message array
@@ -940,14 +940,16 @@ end
 
           <section>
             <h2>Measurement</h2>
-            <span class="fragment" style="color:yellow">How do we evaluate performance?</span><br>
+            <span class="fragment" style="color:yellow">How do we compare performance?</span><br>
             <p>
             <ul>
               <span class="fragment"><li>Benchmark Suites e.g. <a href="https://github.com/ThePhD/lua-bindings-shootout">Lua Bindings Shootout</a></li></span>
               <ul>
                 <span class="fragment"><li>16 Lua Bindings</li></span>
-                <span class="fragment"><li><a href="http://www.lua.org/versions.html#5.4">Lua 5.4.2</a> and <a href="http://www.swig.org/">SWIG 4.0.2</a></li></span>
+                <span class="fragment"><li><a href="https://github.com/ThePhD/sol2.git">Sol3 3.2.3</a> and <a href="http://www.swig.org/">SWIG 4.0.2</a> (<a href="http://www.lua.org/versions.html#5.4">Lua 5.4.2</a>)</li></span>
                 <span class="fragment"><li><a href="https://en.wikichip.org/wiki/intel/core_i5/i5-6200u">x86-64 i5-6200u</a> and <a href="https://en.wikipedia.org/wiki/Comparison_of_ARMv8-A_cores">Embedded ARMv8</a></li></span>
+                <span class="fragment"><ul><li>64 bit dual core (4 threads) Skylake</li></ul></span>
+                <span class="fragment"><ul><li>2.3 Ghz, L1 128 KiB, L2 512 KiB, L3 3 MiB</li></ul></span>
                 <span class="fragment"><li><a href="https://llvm.org/">Clang 9/10/11</a></li></span>
               </ul>
             </ul>
