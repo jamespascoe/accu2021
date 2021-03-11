@@ -41,6 +41,8 @@ Blu Wireless
 
 Originally an IP licensing company (which built an 802.11ad MAC, PHY and software stack), now a product company. What Blu Wireless does is to provide high bandwidth IP networking across long range wireless links for a range of markets - one of which is high speed mobility, so trains, racers etc. It’s important to note that by embedded, I am really referring to high-end embedded systems - i.e. the NPUs are quad-core ARMv8s, clocked at 1.2Ghz with gigabytes of DDR, running desktop Linux. So, they are not small microcontrollers.
 
+One of the nice things about Blu Wireless is that its very multidisciplinary, so you’ve literally got, people who wrote the RTL for the PHY and MAC sitting next to Linux driver writers, sat next to the Back-end team, sat next to the verification engineers and the PCB guys and ultimately the software guys.
+
 Blu Wireless Units
 
 This is what the units look like. So, you can see the train top unit which would sit on the roof of a train. Typically, there would be two of these per train (front and rear) but there may be more in the train is particularly long. The ‘in train’ units are the NPUs and are mounted in the roof space of a carriage and connect into the on-board Ethernet. Typically, a Customer Connection Unit communicates with the in-train unit to determine if the link is up (or not).
