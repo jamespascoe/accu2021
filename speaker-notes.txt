@@ -13,6 +13,8 @@ Pre-Presentation Reminders
 C++20 + Lua = Flexibility
 -------------------------
 
+<start audio recording>
+
 Hello and good morning, good afternoon or good evening depending on where you are - my name is Jim Pascoe and today we are going to talk about combining C++20 with Lua. This is a major update of a talk I gave at CppOnSea 2020, so if you’ve seen the CppOnSea talk then, don’t worry, there is plenty of new content, if you haven’t seen my CppOnSea talk, then great you get it all fresh.
 
 A few items to note - the slides are online and this is the URL, so if you want to follow along from the comfort of your own browser then please do so. You can change the theme by clicking on the hamburger icon. Also, I’ve linked to relevant sources of further information, so do click around. And, this is the GitHub link for the example code which accompanies the talk. More about that later. If you would like to ask a question, please do so in the Q&A panel - I'll answer them as they pop up - its possibly a bit more natural that way.
@@ -55,7 +57,7 @@ I going to show a short second video, which I think illustrates the application 
 
 Connection Management
 
-The Connection Manager is a mission critical piece of software that implements the beam choreography. The first version (I didn’t write this) was a monolithic C++98 application, but by all measures was done well. Over its lifetime, there were very few bugs and it took us from having nothing to having something. So, v1 implemented a simple behaviour, that is, connect to the strongest signal and hold on to that connection until the MAC tells us we’ve been disconnected. And that worked of a fashion, but geographic anomalies, RF anomalies meant that the Connection Manager would often make the wrong decision, that is, connect to the wrong access point - and those mistakes are costly, because you have network reconfiguration involved.
+The Connection Manager is a mission critical piece of software that implements the beam choreography <click>. The first version <click> (I didn’t write this) was a monolithic C++98 application, but by all measures was done well. Over its lifetime, there were very few bugs and it took us from having nothing to having something. So, v1 implemented a simple behaviour, that is, connect to the strongest signal and hold on to that connection until the MAC tells us we’ve been disconnected. And that worked of a fashion, but geographic anomalies, RF anomalies meant that the Connection Manager would often make the wrong decision, that is, connect to the wrong access point - and those mistakes are costly, because you have network reconfiguration involved.
 
 The other key drawback was that making changes to the Connection Manager’s behaviour was difficult. So everything time an FAE or a Technical Manager wanted to explore a hypothesis or test an idea, we (i.e. the software team) had to go through a complete: design, implement, test, deploy cycle which a) takes a long time and b) has to then involve the customer (because you cant change software on trains at will). So, improvements could not be made fast enough and this really is the crux of it, in that we couldn’t reflect our learning in the code fast enough.
 
@@ -203,6 +205,8 @@ In the GitHub gist, Example::Callback is a type alias to std::function<void(void
 Lets look at lines 5-17.
 
 <explain code>
+
+A SWIGLUA_REF provides a mechanism to store an object (usually a function) between calls to the interpreter.
 
 The way to understand how this works is to flip between the SWIG input file and the wrapper. It’s a bit like when your optimising code and you flipping between the source and the assembly (although these days we just use Compiler Explorer - which is a fabulous tool).
 
